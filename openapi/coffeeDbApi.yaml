@@ -1,0 +1,422 @@
+openapi: 3.0.0
+info:
+  title: Database Of Coffee
+  version: 0.0.1
+
+servers:
+  - url: http://databaseof.coffee/
+
+paths:
+  /origins:
+    get:
+      summary: List of origins
+      operationId: getOrigins
+      x-openapi-router-controller: api
+      responses:
+        "200":
+          $ref: "#/components/responses/LocationsResp"
+#  /origins/{origin}/regions:
+#    get:
+#      summary: List of regions in the given origin
+#      parameters:
+#        - name: origin
+#          in: path
+#          required: true
+#          schema:
+#            $ref: "#/components/schemas/RefName"
+#      responses:
+#        "200":
+#          $ref: "#/components/responses/LocationsResp"
+#  /origins/{origin}/{region}/producers:
+#    get:
+#      summary: List of producers from a region
+#      parameters:
+#        - name: origin
+#          in: path
+#          required: true
+#          schema:
+#            $ref: "#/components/schemas/RefName"
+#        - name: region
+#          in: path
+#          required: true
+#          schema:
+#            $ref: "#/components/schemas/RefName"
+#      responses:
+#        "200":
+#          $ref: "#/components/responses/LocationsResp"
+#  /varieties:
+#    get:
+#      summary: List of all varieties
+#      responses:
+#        "200":
+#          $ref: "#/components/responses/ItemsResp"
+#  /processes:
+#    get:
+#      summary: List of all processes
+#      responses:
+#        "200":
+#          $ref: "#/components/responses/ItemsResp"
+#  /roaterCountries:
+#    get:
+#      summary: List of countries of roasters
+#      responses:
+#        "200":
+#          description: List of country codes
+#          content:
+#            text/html:
+#              schema:
+#                type: string
+#            application/json:
+#              schema:
+#                type: array
+#                items:
+#                  $ref: "#/components/schemas/CountryCode"
+#  /roasters:
+#    get:
+#      summary: List of all roasters
+#      responses:
+#        "200":
+#          $ref: "#/components/responses/RoasterResp"
+#  /roasters/{countryCode}:
+#    get:
+#      summary: List of all roasters in the given country
+#      parameters:
+#        - name: countryCode
+#          in: path
+#          required: true
+#          schema:
+#            $ref: "#/components/schemas/CountryCode"
+#      responses:
+#        "200":
+#          $ref: "#/components/responses/RoasterResp"
+#  /flavournotes:
+#    get:
+#      summary: List of all flavour notes
+#      responses:
+#        "200":
+#          $ref: "#/components/responses/ItemsResp"
+#  /coffees:
+#    get:
+#      summary: List of coffees
+#      parameters:
+#        - name: origin
+#          in: query
+#          schema:
+#            $ref: "#/components/schemas/RefName"
+#        - name: region
+#          in: query
+#          schema:
+#            $ref: "#/components/schemas/RefName"
+#        - name: producer
+#          in: query
+#          schema:
+#            $ref: "#/components/schemas/RefName"
+#        - name: variety
+#          in: query
+#          schema:
+#            $ref: "#/components/schemas/RefName"
+#        - name: processing
+#          in: query
+#          schema:
+#            $ref: "#/components/schemas/RefName"
+#        - name: roaster
+#          in: query
+#          schema:
+#            $ref: "#/components/schemas/RefName"
+#        - name: roast
+#          in: query
+#          schema:
+#            $ref: "#/components/schemas/Roast"
+#        - name: flavournote
+#          in: query
+#          explode: false
+#          style: form
+#          schema:
+#            type: array
+#            items:
+#              $ref: "#/components/schemas/RefName"
+#            minItems: 1
+#            maxItems: 3
+#        - name: flavourcategory
+#          in: query
+#          explode: false
+#          style: form
+#          schema:
+#            type: array
+#            items:
+#              $ref: "#/components/schemas/RefName"
+#            minItems: 1
+#            maxItems: 3
+#        - name: from
+#          in: query
+#          schema:
+#            type: integer
+#            minimum: 0
+#            default: 0
+#        - name: to
+#          in: query
+#          schema:
+#            type: integer
+#            minimum: 0
+#            default: 100
+#      responses:
+#        "200":
+#          description: Coffees matching the query
+#          content:
+#            text/html:
+#              schema:
+#                type: string
+#            application/json:
+#              schema:
+#                type: array
+#                items:
+#                  type: object
+#                  properties:
+#                    coffees:
+#                      type: array
+#                      items:
+#                        $ref: "#/components/schemas/Coffee"
+#                    pagination:
+#                      type: object
+#                      properties:
+#                        total:
+#                          type: integer
+#                          minimum: 0
+#                        returned:
+#                          type: integer
+#                          minimum: 0
+#                        from:
+#                          type: integer
+#                          minimum: 0
+#                        to:
+#                          type: integer
+#                          minimum: 0
+#                      required:
+#                        - total
+#                        - returned
+#                        - from
+#                        - to
+#                  required:
+#                    - coffees
+#                    - pagination
+#    post:
+#      summary: Commit a (potentially) new coffee to the archive
+#      requestBody:
+#        required: true
+#        content:
+#          application/json:
+#            schema:
+#              $ref: "#/components/schemas/IncomingCoffee"
+#      responses:
+#        "200":
+#          description: Incoming coffee accepted
+#  /coffee/{id}:
+#    get:
+#      summary: provides infos for a single coffee. Json only
+#      parameters:
+#        - in: path
+#          name: id
+#          required: true
+#          schema:
+#            type: integer
+#      responses:
+#        "200":
+#          description: Coffee for given id
+#          content:
+#            text/html:
+#              schema:
+#                type: string
+#            application/json:
+#              schema:
+#                $ref: "#/components/schemas/Coffee"
+                
+
+components:
+  schemas:
+    RefName:
+      type: string
+      format: "^[a-z]{2-64}$"
+    DisplayName:
+      type: string
+      minLength: 2
+      maxLength: 128
+    CountryCode:
+      description: Two letter country code following iso-3166 alpha-2
+      type: string
+      format: "^[a-z]{2}$"
+    LanguageCode:
+      description: Two letter code following ISO-639-1 for each supported language
+      type: string
+      enum: [en, de]
+    Roast:
+      type: string
+      enum: [filter, onmi, espresso]
+    NamedId:
+      type: object
+      properties:
+        refName:
+          $ref: "#/components/schemas/RefName"
+        displayName:
+          $ref: "#/components/schemas/DisplayName"
+      required:
+        - refName
+        - displayName
+    LocationId:
+      description: Used for origins, regions and producers. Elevation is in meters above sea level
+      type: object
+      properties:
+        refName:
+          $ref: "#/components/schemas/RefName"
+        displayName:
+          $ref: "#/components/schemas/DisplayName"
+        elevationMin:
+          type: integer
+          minimum: 0
+          maximum: 5000
+        elevationMax:
+          type: integer
+          minimum: 0
+          maximum: 5000
+      required:
+        - refName
+        - displayName
+    Roaster:
+      type: object
+      properties:
+        refName:
+          $ref: "#/components/schemas/RefName"
+        displayName:
+          $ref: "#/components/schemas/DisplayName"
+        countryCode:
+          $ref: "#/components/schemas/CountryCode"
+      required:
+        - refName
+        - displayName
+        - countryCode
+    Coffee:
+      type: object
+      properties:
+        id:
+          type: integer
+        displayName:
+          $ref: "#/components/schemas/DisplayName"
+        roaster:
+          $ref: "#/components/schemas/Roaster"
+        roast:
+          $ref: "#/components/schemas/Roast"
+        flavourNotes:
+          type: array
+          items:
+            $ref: "#/components/schemas/NamedId"
+          minItems: 1
+          maxItems: 5
+        greens:
+          type: array
+          items:
+            type: object
+            properties:
+              origin:
+                $ref: "#/components/schemas/LocationId"
+              region:
+                $ref: "#/components/schemas/LocationId"
+              producer:
+                $ref: "#/components/schemas/LocationId"
+              variety:
+                $ref: "#/components/schemas/NamedId"
+              processing:
+                $ref: "#/components/schemas/NamedId"
+              decaffeinated:
+                $ref: "#/components/schemas/NamedId"
+              certification:
+                $ref: "#/components/schemas/NamedId"
+              blendPercentage:
+                type: integer
+                minimum: 0
+                maximum: 100
+            required:
+              - origin
+          minItems: 1
+          maxItems: 5
+      required:
+        - id
+        - displayName
+        - roaster
+    IncomingCoffee:
+      type: object
+      properties:
+        sourceLanguage:
+          $ref: "#/components/schemas/LanguageCode"
+        sourceUrl:
+          type: string
+          format: uri
+        coffeeName:
+          type: string
+        roasterName:
+          type: string
+        roasterCountry:
+          $ref: "#/components/schemas/CountryCode"
+        roast:
+          $ref: "#/components/schemas/Roast"
+        tastingnotes:
+          type: array
+          items:
+            $ref: "#/components/schemas/NamedId"
+        greens:
+          type: array
+          items:
+            type: object
+            properties:
+              origin:
+                type: string
+              region:
+                type: string
+              producer:
+                type: string
+              varieties:
+                type: string
+              percent:
+                type: integer
+                minimum: 0
+                maximum: 100
+            required:
+              - origin
+      required:
+        - sourceLanguage
+        - coffeeName
+        - roasterName
+        - roasterCountry
+
+  responses:
+    ItemsResp:
+      description: List of standardized terms
+      content:
+        text/html:
+          schema:
+            type: string
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/NamedId"
+    LocationsResp:
+      description: List of locations or location-related terms
+      content:
+        text/html:
+          schema:
+            type: string
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/LocationId"
+    RoasterResp:
+      description: List of roasters
+      content:
+        text/html:
+          schema:
+            type: string
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Roaster"

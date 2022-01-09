@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %}Origins{% endblock %}</h1>
+    {% for origin in origins %}
+        {{ origin.refName }}<br>
+    {% endfor %}
+{% endblock %}
