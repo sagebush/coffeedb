@@ -12,6 +12,6 @@ app.add_api('coffeeDbApi.yaml', strict_validation=True)
 
 dbUrl = os.getenv('DB_URL')
 print(dbUrl)
-sessionmaker = sessionmaker(create_engine(dbUrl, convert_unicode=True))
+dbengine = create_engine(dbUrl, convert_unicode=True)
 
 application = app.app

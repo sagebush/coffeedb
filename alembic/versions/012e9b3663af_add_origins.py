@@ -11,14 +11,92 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '012e9b3663af'
-down_revision = '377df7490195'
+down_revision = '48b0a70aecc0'
 branch_labels = None
 depends_on = None
 
+countries = (
+    # the worlds largest coffee producers
+    ('brazil', 'BR', 'south_america', 'Brazil', 'Brazilien'),
+    ('vietnam', 'VN', 'asia', 'Vietnam', 'Vietnam'),
+    ('colombia', 'CO', 'south_america', 'Colombia', 'Columbien'),
+    ('indonesia', 'ID', 'asia', 'Indonesia', 'Indonesien'),
+    ('ethiopia', 'ET', 'africa', 'Ethiopia', 'Äthiopien'),
+    ('honduras', 'HN', 'south_america', 'Honduras', 'Honduras'),
+    ('india', 'IN', 'asia', 'India', 'Indien'),
+    ('uganda', 'UG', 'africa', 'Uganda', 'Uganda'),
+    ('mexico', 'MX', 'south_america', 'Mexico', 'Mexico'),
+    ('guatemala', 'GT', 'south_america', 'Guatemala', 'Guatemala'),
+    ('peru', 'PE', 'south_america', 'Peru', 'Peru'),
+    ('nicaragua', 'NI', 'south_america', 'Nicaragua', 'Nicaragua'),
+    ('china', 'CN', 'asia', 'China', 'China'),
+    ('ivory_coast', 'CI', 'africa', 'Ivory Coast', 'Elfenbeinküste'),
+    ('costa_rica', 'CR', 'south_america', 'Costa Rica', 'Costa Rica'),
+    ('kenya', 'KE', 'africa', 'Kenya', 'Kenya'),
+    ('papua_new_guinea', 'PG', 'oceania', 'Papua New Guinea', 'Papua Neu Guinea'),
+    ('tanzania', 'TZ', 'africa', 'Tanzania', 'Tanzania'),
+    ('el_salvador', 'SV', 'south_america', 'El Salvador', 'El Salvador'),
+    ('ecuador', 'EC', 'south_america', 'Ecuador', 'Ecuador'),
+    ('cameroon', 'CM', 'africa', 'Cameroon', 'Kamerun'),
+    ('laos', 'LA', 'asia', 'Laos', 'Laos'),
+    ('madagascar', 'MG', 'africa', 'Madagascar', 'Madagaskar'),
+    ('gabon', 'GA', 'africa', 'Gabon', 'Gabon'),
+    ('thailand', 'TH', 'asia', 'Thailand', 'Thailand'),
+    ('venezuela', 'VE', 'south_america', 'Venezuela', 'Venezuela'),
+    ('dominican_republic', 'DO', 'south_america', 'Dominican Republic', 'Dominikanische Republik'),
+    ('haiti', 'HT', 'south_america', 'Haiti', 'Haiti'),
+    ('congo', 'CG', 'africa', 'Congo', 'Kongo'),
+    ('rwanda', 'RW', 'africa', 'Rwanda', 'Ruanda'),
+    ('burundi', 'BI', 'africa', 'Burundi', 'Burundi'),
+    ('philippines', 'PH', 'asia', 'Philippines', 'Philippinen'),
+    ('togo', 'TG', 'africa', 'Togo', 'Togo'),
+    ('guinea', 'GN', 'africa', 'Guinea', 'Guinea'),
+    ('yemen', 'YE', 'asia', 'Yemen', 'Yemen'),
+    ('cuba', 'CU', 'south_america', 'Cuba', 'Kuba'),
+    ('panama', 'PA', 'south_america', 'Panama', 'Panama'),
+    ('bolivia', 'BO', 'south_america', 'Bolivia', 'Bolivien'),
+    ('central_african_republic', 'CF', 'africa', 'Central African Republic', 'Zentralafrikanische Republik'),
+    ('nigeria', 'NG', 'africa', 'Nigeria', 'Nigeria'),
+    ('ghana', 'GH', 'africa', 'Ghana', 'Ghana'),
+    ('sierra_leone', 'SL', 'africa', 'Sierra Leone', 'Sierra Leone'),
+    ('jamaica', 'JM', 'south_america', 'Jamaica', 'Jamaika'),
+    ('paraguay', 'PY', 'south_america', 'Paraguay', 'Paraguay'),
+    ('malawi', 'MW', 'africa', 'Malawi', 'Malawi'),
+    ('trinidad_tobago', 'TT', 'africa', 'Trinidad and Tobago', 'Trinidad und Tobago'),
+    ('zimbabwe', 'ZW', 'africa', 'Zimbabwe', 'Zimbabwe'),
+    ('liberia', 'LR', 'africa', 'Liberia', 'Liberia'),
+    ('zambia', 'ZM', 'africa', 'Zambia', 'Zambia'),
+    # some countries I expect roasters to join
+    ('usa', 'US', 'north_america', 'United States of America', 'Vereinigte Staaten von Amerika'),
+    ('canada', 'CA', 'north_america', 'Canada', 'Kanada'),
+    ('britain', 'BG', 'europe', 'Great Britain', 'Großbritannien'),
+    ('ireland', 'IE', 'europe', 'Ireland', 'Irland'),
+    ('germany', 'DE', 'europe', 'Germany', 'Deutschland'),
+    ('france', 'FR', 'europe', 'France', 'Frankreich'),
+    ('spain', 'ES', 'europe', 'Spain', 'Spanien'),
+    ('portugal', 'PT', 'europe', 'Portugal', 'Portugal'),
+    ('italy', 'IT', 'europe', 'Italy', 'Italien'),
+    ('netherlands', 'NL', 'europe', 'Netherland', 'Niederlande'),
+    ('belgium', 'BE', 'europe', 'Belgium', 'Belgien'),
+    ('swiss', 'CH', 'europe', 'Switzerland', 'Schweiz'),
+    ('austria', 'AT', 'europe', 'Austria', 'Österreich'),
+    ('slovenia', 'SI', 'europe', 'Slovenia', 'Slovenien'),
+    ('slovakia', 'SK', 'europe', 'Slovakia', 'Slovakei'),
+    ('hungary', 'HU', 'europe', 'Hungary', 'Ungarn'),
+    ('czechya', 'CZ', 'europe', 'Czechya', 'Tschechien'),
+    ('poland', 'PL', 'europe', 'Poland', 'Polen'),
+    ('denmark', 'DK', 'europe', 'Denmark', 'Dänemark'),
+    ('sweden', 'SE', 'europe', 'Sweden', 'Schweden'),
+    ('norway', 'NO', 'europe', 'Norway', 'Norwegen'),
+    ('finland', 'FI', 'europe', 'Finland', 'Finland'),
+    ('japan', 'JP', 'asia', 'Japan', 'Japan'),
+    ('singapore', 'SG', 'asia', 'Singapore', 'Singapur')
+)
 
 def upgrade():
     meta = sa.MetaData(bind=op.get_bind())
     meta.reflect()
+
     lang_table = sa.Table('language', meta)
     op.bulk_insert(lang_table,
         [
@@ -29,263 +107,81 @@ def upgrade():
     cont_table =  sa.Table('continent', meta)
     op.bulk_insert(cont_table,
         [
-            {'ref_name':'africa'},
-            {'ref_name':'asia'},
-            {'ref_name':'europe'},
-            {'ref_name':'north_america'},
-            {'ref_name':'south_america'},
-            {'ref_name':'oceania'},
+            {'name':'africa'},
+            {'name':'asia'},
+            {'name':'europe'},
+            {'name':'north_america'},
+            {'name':'south_america'},
+            {'name':'oceania'},
         ]
     )
-    cont_i18n_table =  sa.Table('continent_i18n', meta)
+    cont_i18n_table =  sa.Table('continent_translation', meta)
     op.bulk_insert(cont_i18n_table,
         [
-            {'continent_ref_name':'africa', 'language_code':'EN', 'translation':'Africa'},
-            {'continent_ref_name':'africa', 'language_code':'DE', 'translation':'Afrika'},
-            {'continent_ref_name':'asia', 'language_code':'EN', 'translation':'Asia'},
-            {'continent_ref_name':'asia', 'language_code':'DE', 'translation':'Asien'},
-            {'continent_ref_name':'europe', 'language_code':'EN', 'translation':'Europe'},
-            {'continent_ref_name':'europe', 'language_code':'DE', 'translation':'Europa'},
-            {'continent_ref_name':'north_america', 'language_code':'EN', 'translation':'North America'},
-            {'continent_ref_name':'north_america', 'language_code':'DE', 'translation':'Nordamerika'},
-            {'continent_ref_name':'south_america', 'language_code':'EN', 'translation':'South America'},
-            {'continent_ref_name':'south_america', 'language_code':'DE', 'translation':'Südamerika'},
-            {'continent_ref_name':'oceania', 'language_code':'EN', 'translation':'Oceania'},
-            {'continent_ref_name':'oceania', 'language_code':'DE', 'translation':'Australien und Ozeanien'}
+            {'continent':'africa', 'language':'EN', 'value':'Africa'},
+            {'continent':'africa', 'language':'DE', 'value':'Afrika'},
+            {'continent':'asia', 'language':'EN', 'value':'Asia'},
+            {'continent':'asia', 'language':'DE', 'value':'Asien'},
+            {'continent':'europe', 'language':'EN', 'value':'Europe'},
+            {'continent':'europe', 'language':'DE', 'value':'Europa'},
+            {'continent':'north_america', 'language':'EN', 'value':'North America'},
+            {'continent':'north_america', 'language':'DE', 'value':'Nordamerika'},
+            {'continent':'south_america', 'language':'EN', 'value':'South America'},
+            {'continent':'south_america', 'language':'DE', 'value':'Südamerika'},
+            {'continent':'oceania', 'language':'EN', 'value':'Oceania'},
+            {'continent':'oceania', 'language':'DE', 'value':'Australien und Ozeanien'}
         ]
     )
-    count_table =  sa.Table('country', meta)
-    op.bulk_insert(count_table,
-        [
-            # the worlds largest coffee producers
-            {'code':'BR', 'continent_ref_name':'south_america'},
-            {'code':'VN', 'continent_ref_name':'asia'},
-            {'code':'CO', 'continent_ref_name':'south_america'},
-            {'code':'ID', 'continent_ref_name':'asia'},
-            {'code':'ET', 'continent_ref_name':'africa'},
-            {'code':'HN', 'continent_ref_name':'south_america'},
-            {'code':'IN', 'continent_ref_name':'asia'},
-            {'code':'UG', 'continent_ref_name':'africa'},
-            {'code':'MX', 'continent_ref_name':'south_america'},
-            {'code':'GT', 'continent_ref_name':'south_america'},
-            {'code':'PE', 'continent_ref_name':'south_america'},
-            {'code':'NI', 'continent_ref_name':'south_america'},
-            {'code':'CN', 'continent_ref_name':'asia'},
-            {'code':'CI', 'continent_ref_name':'africa'},
-            {'code':'CR', 'continent_ref_name':'south_america'},
-            {'code':'KE', 'continent_ref_name':'africa'},
-            {'code':'PG', 'continent_ref_name':'oceania'},
-            {'code':'TZ', 'continent_ref_name':'africa'},
-            {'code':'SV', 'continent_ref_name':'south_america'},
-            {'code':'EC', 'continent_ref_name':'south_america'},
-            {'code':'CM', 'continent_ref_name':'africa'},
-            {'code':'LA', 'continent_ref_name':'asia'},
-            {'code':'MG', 'continent_ref_name':'africa'},
-            {'code':'GA', 'continent_ref_name':'africa'},
-            {'code':'TH', 'continent_ref_name':'asia'},
-            {'code':'VE', 'continent_ref_name':'south_america'},
-            {'code':'DO', 'continent_ref_name':'south_america'},
-            {'code':'HT', 'continent_ref_name':'south_america'},
-            {'code':'CG', 'continent_ref_name':'africa'},
-            {'code':'RW', 'continent_ref_name':'africa'},
-            {'code':'BI', 'continent_ref_name':'africa'},
-            {'code':'PH', 'continent_ref_name':'asia'},
-            {'code':'TG', 'continent_ref_name':'africa'},
-            {'code':'GN', 'continent_ref_name':'africa'},
-            {'code':'YE', 'continent_ref_name':'asia'},
-            {'code':'CU', 'continent_ref_name':'south_america'},
-            {'code':'PA', 'continent_ref_name':'south_america'},
-            {'code':'BO', 'continent_ref_name':'south_america'},
-            {'code':'CF', 'continent_ref_name':'africa'},
-            {'code':'NG', 'continent_ref_name':'south_america'},
-            {'code':'GH', 'continent_ref_name':'africa'},
-            {'code':'SL', 'continent_ref_name':'africa'},
-            {'code':'JM', 'continent_ref_name':'south_america'},
-            {'code':'PY', 'continent_ref_name':'south_america'},
-            {'code':'MW', 'continent_ref_name':'africa'},
-            {'code':'TT', 'continent_ref_name':'africa'},
-            {'code':'ZW', 'continent_ref_name':'africa'},
-            {'code':'LR', 'continent_ref_name':'africa'},
-            {'code':'ZM', 'continent_ref_name':'africa'},
-            # some countries I expect roasters to join
-            {'code':'US', 'continent_ref_name':'north_america'},
-            {'code':'CA', 'continent_ref_name':'north_america'},
-            {'code':'GB', 'continent_ref_name':'europe'},
-            {'code':'IE', 'continent_ref_name':'europe'},
-            {'code':'DE', 'continent_ref_name':'europe'},
-            {'code':'FR', 'continent_ref_name':'europe'},
-            {'code':'ES', 'continent_ref_name':'europe'},
-            {'code':'PT', 'continent_ref_name':'europe'},
-            {'code':'IT', 'continent_ref_name':'europe'},
-            {'code':'NL', 'continent_ref_name':'europe'},
-            {'code':'BE', 'continent_ref_name':'europe'},
-            {'code':'CH', 'continent_ref_name':'europe'},
-            {'code':'AT', 'continent_ref_name':'europe'},
-            {'code':'SI', 'continent_ref_name':'europe'},
-            {'code':'SK', 'continent_ref_name':'europe'},
-            {'code':'HU', 'continent_ref_name':'europe'},
-            {'code':'CZ', 'continent_ref_name':'europe'},
-            {'code':'PL', 'continent_ref_name':'europe'},
-            {'code':'DK', 'continent_ref_name':'europe'},
-            {'code':'SE', 'continent_ref_name':'europe'},
-            {'code':'NO', 'continent_ref_name':'europe'},
-            {'code':'FI', 'continent_ref_name':'europe'},
-            {'code':'JP', 'continent_ref_name':'asia'},
-            {'code':'SG', 'continent_ref_name':'asia'},
-        ]
-    )
-    count_i18n_table =  sa.Table('country_i18n', meta)
-    op.bulk_insert(count_i18n_table,
-        [
-            {'country_code':'BR', 'language_code':'EN', 'translation':'Brazil'},     
-            {'country_code':'BR', 'language_code':'DE', 'translation':'Brazilien'},
-            {'country_code':'VN', 'language_code':'EN', 'translation':'Vietnam'},
-            {'country_code':'VN', 'language_code':'DE', 'translation':'Vietnam'},
-            {'country_code':'CO', 'language_code':'EN', 'translation':'Colombia'},
-            {'country_code':'CO', 'language_code':'DE', 'translation':'Columbien'},
-            {'country_code':'ID', 'language_code':'EN', 'translation':'Indonesia'},
-            {'country_code':'ID', 'language_code':'DE', 'translation':'Indonesien'},
-            {'country_code':'ET', 'language_code':'EN', 'translation':'Ethiopia'},
-            {'country_code':'ET', 'language_code':'DE', 'translation':'Äthiopien'},
-            {'country_code':'HN', 'language_code':'EN', 'translation':'Honduras'},
-            {'country_code':'HN', 'language_code':'DE', 'translation':'Honduras'},
-            {'country_code':'IN', 'language_code':'EN', 'translation':'India'},
-            {'country_code':'IN', 'language_code':'DE', 'translation':'Indien'},
-            {'country_code':'UG', 'language_code':'EN', 'translation':'Uganda'},
-            {'country_code':'UG', 'language_code':'DE', 'translation':'Uganda'},
-            {'country_code':'MX', 'language_code':'EN', 'translation':'Mexico'},
-            {'country_code':'MX', 'language_code':'DE', 'translation':'Mexico'},
-            {'country_code':'GT', 'language_code':'EN', 'translation':'Guatemala'},
-            {'country_code':'GT', 'language_code':'DE', 'translation':'Guatemala'},
-            {'country_code':'PE', 'language_code':'EN', 'translation':'Peru'},
-            {'country_code':'PE', 'language_code':'DE', 'translation':'Peru'},
-            {'country_code':'NI', 'language_code':'EN', 'translation':'Nicaragua'},
-            {'country_code':'NI', 'language_code':'DE', 'translation':'Nicaragua'},
-            {'country_code':'CN', 'language_code':'EN', 'translation':'China'},
-            {'country_code':'CN', 'language_code':'DE', 'translation':'China'},
-            {'country_code':'CI', 'language_code':'EN', 'translation':'Ivory Coast'},
-            {'country_code':'CI', 'language_code':'DE', 'translation':'Elfenbeinküste'},
-            {'country_code':'CR', 'language_code':'EN', 'translation':'Costa Rica'},
-            {'country_code':'CR', 'language_code':'DE', 'translation':'Costa Rica'},
-            {'country_code':'KE', 'language_code':'EN', 'translation':'Kenya'},
-            {'country_code':'KE', 'language_code':'DE', 'translation':'Kenya'},
-            {'country_code':'PG', 'language_code':'EN', 'translation':'Papua New Guinea'},
-            {'country_code':'PG', 'language_code':'DE', 'translation':'Papua Neu Guinea'},
-            {'country_code':'TZ', 'language_code':'EN', 'translation':'Tanzania'},
-            {'country_code':'TZ', 'language_code':'DE', 'translation':'Tanzania'},
-            {'country_code':'SV', 'language_code':'EN', 'translation':'El Salvador'},
-            {'country_code':'SV', 'language_code':'DE', 'translation':'El Salvador'},
-            {'country_code':'EC', 'language_code':'EN', 'translation':'Ecuador'},
-            {'country_code':'EC', 'language_code':'DE', 'translation':'Ecuador'},
-            {'country_code':'CM', 'language_code':'EN', 'translation':'Cameroon'},
-            {'country_code':'CM', 'language_code':'DE', 'translation':'Kamerun'},
-            {'country_code':'LA', 'language_code':'EN', 'translation':'Laos'},
-            {'country_code':'LA', 'language_code':'DE', 'translation':'Laos'},
-            {'country_code':'MG', 'language_code':'EN', 'translation':'Madagascar'},
-            {'country_code':'MG', 'language_code':'DE', 'translation':'Madagaskar'},
-            {'country_code':'GA', 'language_code':'EN', 'translation':'Gabon'},
-            {'country_code':'GA', 'language_code':'DE', 'translation':'Gabon'},
-            {'country_code':'TH', 'language_code':'EN', 'translation':'Thailand'},
-            {'country_code':'TH', 'language_code':'DE', 'translation':'Thailand'},
-            {'country_code':'VE', 'language_code':'EN', 'translation':'Venezuela'},
-            {'country_code':'VE', 'language_code':'DE', 'translation':'Venezuela'},
-            {'country_code':'DO', 'language_code':'EN', 'translation':'Dominican Republic'},
-            {'country_code':'DO', 'language_code':'DE', 'translation':'Dominikanische Republik'},
-            {'country_code':'HT', 'language_code':'EN', 'translation':'Haiti'},
-            {'country_code':'HT', 'language_code':'DE', 'translation':'Haiti'},
-            {'country_code':'CG', 'language_code':'EN', 'translation':'Congo'},
-            {'country_code':'CG', 'language_code':'DE', 'translation':'Kongo'},
-            {'country_code':'RW', 'language_code':'EN', 'translation':'Rwanda'},
-            {'country_code':'RW', 'language_code':'DE', 'translation':'Ruanda'},
-            {'country_code':'BI', 'language_code':'EN', 'translation':'Burundi'},
-            {'country_code':'BI', 'language_code':'DE', 'translation':'Burundi'},
-            {'country_code':'PH', 'language_code':'EN', 'translation':'Philippines'},
-            {'country_code':'PH', 'language_code':'DE', 'translation':'Philippinen'},
-            {'country_code':'TG', 'language_code':'EN', 'translation':'Togo'},
-            {'country_code':'TG', 'language_code':'DE', 'translation':'Togo'},
-            {'country_code':'GN', 'language_code':'EN', 'translation':'Guinea'},
-            {'country_code':'GN', 'language_code':'DE', 'translation':'Guinea'},
-            {'country_code':'YE', 'language_code':'EN', 'translation':'Yemen'},
-            {'country_code':'YE', 'language_code':'DE', 'translation':'Yemen'},
-            {'country_code':'CU', 'language_code':'EN', 'translation':'Cuba'},
-            {'country_code':'CU', 'language_code':'DE', 'translation':'Kuba'},
-            {'country_code':'PA', 'language_code':'EN', 'translation':'Panama'},
-            {'country_code':'PA', 'language_code':'DE', 'translation':'Panama'},
-            {'country_code':'BO', 'language_code':'EN', 'translation':'Bolivia'},
-            {'country_code':'BO', 'language_code':'DE', 'translation':'Bolivien'},
-            {'country_code':'CF', 'language_code':'EN', 'translation':'Central African Republic'},
-            {'country_code':'CF', 'language_code':'DE', 'translation':'Zentralafrikanische Republik'},
-            {'country_code':'NG', 'language_code':'EN', 'translation':'Nigeria'},
-            {'country_code':'NG', 'language_code':'DE', 'translation':'Nigeria'},
-            {'country_code':'GH', 'language_code':'EN', 'translation':'Ghana'},
-            {'country_code':'GH', 'language_code':'DE', 'translation':'Ghana'},
-            {'country_code':'SL', 'language_code':'EN', 'translation':'Sierra Leone'},
-            {'country_code':'SL', 'language_code':'DE', 'translation':'Sierra Leone'},
-            {'country_code':'JM', 'language_code':'EN', 'translation':'Jamaica'},
-            {'country_code':'JM', 'language_code':'DE', 'translation':'Jamaika'},
-            {'country_code':'PY', 'language_code':'EN', 'translation':'Paraguay'},
-            {'country_code':'PY', 'language_code':'DE', 'translation':'Paraguay'},
-            {'country_code':'MW', 'language_code':'EN', 'translation':'Malawi'},
-            {'country_code':'MW', 'language_code':'DE', 'translation':'Malawi'},
-            {'country_code':'TT', 'language_code':'EN', 'translation':'Trinidad and Tobago'},
-            {'country_code':'TT', 'language_code':'DE', 'translation':'Trinidad und Tobago'},
-            {'country_code':'ZW', 'language_code':'EN', 'translation':'Zimbabwe'},
-            {'country_code':'ZW', 'language_code':'DE', 'translation':'Zimbabwe'},
-            {'country_code':'LR', 'language_code':'EN', 'translation':'Liberia'},
-            {'country_code':'LR', 'language_code':'DE', 'translation':'Liberia'},
-            {'country_code':'ZM', 'language_code':'EN', 'translation':'Zambia'},
-            {'country_code':'ZM', 'language_code':'DE', 'translation':'Zambia'},
-            {'country_code':'US', 'language_code':'EN', 'translation':'United States of America'},
-            {'country_code':'US', 'language_code':'DE', 'translation':'Vereinigte Staaten von Amerika'},
-            {'country_code':'CA', 'language_code':'EN', 'translation':'Canada'},
-            {'country_code':'CA', 'language_code':'DE', 'translation':'Kanada'},
-            {'country_code':'GB', 'language_code':'EN', 'translation':'Great Britain'},
-            {'country_code':'GB', 'language_code':'DE', 'translation':'Großbritannien'},
-            {'country_code':'IE', 'language_code':'EN', 'translation':'Ireland'},
-            {'country_code':'IE', 'language_code':'DE', 'translation':'Irland'},
-            {'country_code':'DE', 'language_code':'EN', 'translation':'Germany'},
-            {'country_code':'DE', 'language_code':'DE', 'translation':'Deutschland'},
-            {'country_code':'FR', 'language_code':'EN', 'translation':'France'},
-            {'country_code':'FR', 'language_code':'DE', 'translation':'Frankreich'},
-            {'country_code':'ES', 'language_code':'EN', 'translation':'Spain'},
-            {'country_code':'ES', 'language_code':'DE', 'translation':'Spanien'},
-            {'country_code':'PT', 'language_code':'EN', 'translation':'Portugal'},
-            {'country_code':'PT', 'language_code':'DE', 'translation':'Portugal'},
-            {'country_code':'IT', 'language_code':'EN', 'translation':'Italy'},
-            {'country_code':'IT', 'language_code':'DE', 'translation':'Italien'},
-            {'country_code':'NL', 'language_code':'EN', 'translation':'Netherland'},
-            {'country_code':'NL', 'language_code':'DE', 'translation':'Niederlande'},
-            {'country_code':'BE', 'language_code':'EN', 'translation':'Belgium'},
-            {'country_code':'BE', 'language_code':'DE', 'translation':'Belgien'},
-            {'country_code':'CH', 'language_code':'EN', 'translation':'Switzerland'},
-            {'country_code':'CH', 'language_code':'DE', 'translation':'Schweiz'},
-            {'country_code':'AT', 'language_code':'EN', 'translation':'Austria'},
-            {'country_code':'AT', 'language_code':'DE', 'translation':'Österreich'},
-            {'country_code':'SI', 'language_code':'EN', 'translation':'Slovenia'},
-            {'country_code':'SI', 'language_code':'DE', 'translation':'Slovenien'},
-            {'country_code':'SK', 'language_code':'EN', 'translation':'Slovakia'},
-            {'country_code':'SK', 'language_code':'DE', 'translation':'Slovakei'},
-            {'country_code':'HU', 'language_code':'EN', 'translation':'Hungary'},
-            {'country_code':'HU', 'language_code':'DE', 'translation':'Ungarn'},
-            {'country_code':'CZ', 'language_code':'EN', 'translation':'Czechya'},
-            {'country_code':'CZ', 'language_code':'DE', 'translation':'Tschechien'},
-            {'country_code':'PL', 'language_code':'EN', 'translation':'Poland'},
-            {'country_code':'PL', 'language_code':'DE', 'translation':'Polen'},
-            {'country_code':'DK', 'language_code':'EN', 'translation':'Denmark'},
-            {'country_code':'DK', 'language_code':'DE', 'translation':'Dänemark'},
-            {'country_code':'SE', 'language_code':'EN', 'translation':'Sweden'},
-            {'country_code':'SE', 'language_code':'DE', 'translation':'Schweden'},
-            {'country_code':'NO', 'language_code':'EN', 'translation':'Norway'},
-            {'country_code':'NO', 'language_code':'DE', 'translation':'Norwegen'},
-            {'country_code':'FI', 'language_code':'EN', 'translation':'Finland'},
-            {'country_code':'FI', 'language_code':'DE', 'translation':'Finland'},
-            {'country_code':'JP', 'language_code':'EN', 'translation':'Japan'},
-            {'country_code':'JP', 'language_code':'DE', 'translation':'Japan'},
-            {'country_code':'SG', 'language_code':'EN', 'translation':'Singapore'},
-            {'country_code':'SG', 'language_code':'DE', 'translation':'Singapur'}
-        ]
-    )
+
+    countryTable =  sa.Table('country', meta)
+    countryList = []
+    for c in countries:
+        dct = {'name':c[0], 'continent':c[2]}
+        countryList.append(dct)
+    op.bulk_insert(countryTable, countryList)
+
+    countryI18nTable =  sa.Table('country_translation', meta)
+    countryI18nList = []
+    for c in countries:
+        dct1 = {'country':c[0], 'language':'EN', 'value':c[3]}
+        dct2 = {'country':c[0], 'language':'DE', 'value':c[4]}
+        countryI18nList.append(dct1)
+        countryI18nList.append(dct2)
+    op.bulk_insert(countryI18nTable, countryI18nList)
+
+    countryCodeTable =  sa.Table('country_code', meta)
+    countryCodeList = []
+    for c in countries:
+        dct = {'country':c[0], 'code':c[1]}
+        countryCodeList.append(dct)
+    op.bulk_insert(countryCodeTable, countryCodeList)
 
 
 def downgrade():
-    pass
+    meta = sa.MetaData(bind=op.get_bind())
+    meta.reflect()
+    countryCodeTable =  sa.Table('country_code', meta)
+    countryI18nTable =  sa.Table('country_translation', meta)
+    countryTable =  sa.Table('country', meta)
+    for c in countries:
+        sa.delete(countryCodeTable).where(countryCodeTable.c.country == c[0])
+        sa.delete(countryI18nTable).where(countryI18nTable.c.country == c[0])
+        sa.delete(countryTable).where(countryTable.c.name == c[0])
+    
+    continents = (
+        'africa',
+        'asia',
+        'europe',
+        'north_america',
+        'south_america',
+        'oceania'
+    )
+    continentTable = sa.Table('continent', meta)
+    continentI18nTable = sa.Table('continent_translation', meta)
+    for c in continents:
+        sa.delete(continentTable).where(continentTable.c.name == c)
+        sa.delete(continentI18nTable).where(continentI18nTable.c.continent == c)
+    
+    languageTable = sa.Table('language', meta)
+    sa.delete(languageTable).where(languageTable.c.code == 'EN')
+    sa.delete(languageTable).where(languageTable.c.code == 'DE')

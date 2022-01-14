@@ -3,6 +3,6 @@
 {% block content %}
     <h1>{% block title %}Origins{% endblock %}</h1>
     {% for origin in origins %}
-        {{ origin.refName }}<br>
+        {{origin.name}}, {{origin.continent}}<br>
     {% endfor %}
 {% endblock %}
