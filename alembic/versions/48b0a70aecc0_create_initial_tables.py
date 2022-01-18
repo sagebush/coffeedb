@@ -188,7 +188,7 @@ def upgrade():
         sa.Column('display_name', sa.VARCHAR(128), nullable=False),
         sa.Column('roaster_id', sa.INTEGER, nullable=False),
         sa.PrimaryKeyConstraint('id', name='pk_coffee'),
-        sa.ForeignKeyConstraint(['roaster_id'], ['roaster.id'], name='fk_coffee_roast'),
+        sa.ForeignKeyConstraint(['roaster_id'], ['roaster.id'], name='fk_coffee_roaster'),
     )
     op.create_table(
         'coffee_greens',
@@ -225,18 +225,18 @@ def downgrade():
     op.drop_table('coffee_greens')
     op.drop_table('coffee')
     op.drop_table('green_varieties')
-    op.drop_table('green_id')
+    op.drop_table('green')
     op.drop_table('variety_inheritance')
     op.drop_table('variety')
     op.drop_table('processing_translation')
     op.drop_table('processing')
     op.drop_table('flavour_translation')
     op.drop_table('flavour_colors')
-    op.drop_table('flavour_id')
+    op.drop_table('flavour')
     op.drop_table('roaster')
-    op.drop_table('farm_id')
-    op.drop_table('producer_id')
-    op.drop_table('washing_station_id')
+    op.drop_table('farm')
+    op.drop_table('producer')
+    op.drop_table('washing_station')
     op.drop_table('region')
     op.drop_table('country_code')
     op.drop_table('country_translation')

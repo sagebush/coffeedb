@@ -7,6 +7,7 @@ Create Date: 2022-01-12 21:58:54.149244
 """
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy.sql.expression import insert, delete
 
 
 # revision identifiers, used by Alembic.
@@ -15,6 +16,14 @@ down_revision = '48b0a70aecc0'
 branch_labels = None
 depends_on = None
 
+continents = (
+    ('africa', 'Africa', 'Afrika'),
+    ('asia', 'Asia', 'Asien'),
+    ('europe', 'Europe', 'Europa'),
+    ('north_america', 'North America', 'Nordamerika'),
+    ('south_america', 'South America', 'Südamerika'),
+    ('oceania', 'Oceania', 'Australien und Ozeanien'),
+)
 countries = (
     # the worlds largest coffee producers
     ('brazil', 'BR', 'south_america', 'Brazil', 'Brazilien'),
@@ -92,96 +101,52 @@ countries = (
     ('japan', 'JP', 'asia', 'Japan', 'Japan'),
     ('singapore', 'SG', 'asia', 'Singapore', 'Singapur')
 )
+languageCodes = ('EN', 'DE')
+
 
 def upgrade():
     meta = sa.MetaData(bind=op.get_bind())
     meta.reflect()
 
-    lang_table = sa.Table('language', meta)
-    op.bulk_insert(lang_table,
-        [
-            {'code':'EN'},
-            {'code':'DE'}
-        ]
-    )
-    cont_table =  sa.Table('continent', meta)
-    op.bulk_insert(cont_table,
-        [
-            {'name':'africa'},
-            {'name':'asia'},
-            {'name':'europe'},
-            {'name':'north_america'},
-            {'name':'south_america'},
-            {'name':'oceania'},
-        ]
-    )
-    cont_i18n_table =  sa.Table('continent_translation', meta)
-    op.bulk_insert(cont_i18n_table,
-        [
-            {'continent':'africa', 'language':'EN', 'value':'Africa'},
-            {'continent':'africa', 'language':'DE', 'value':'Afrika'},
-            {'continent':'asia', 'language':'EN', 'value':'Asia'},
-            {'continent':'asia', 'language':'DE', 'value':'Asien'},
-            {'continent':'europe', 'language':'EN', 'value':'Europe'},
-            {'continent':'europe', 'language':'DE', 'value':'Europa'},
-            {'continent':'north_america', 'language':'EN', 'value':'North America'},
-            {'continent':'north_america', 'language':'DE', 'value':'Nordamerika'},
-            {'continent':'south_america', 'language':'EN', 'value':'South America'},
-            {'continent':'south_america', 'language':'DE', 'value':'Südamerika'},
-            {'continent':'oceania', 'language':'EN', 'value':'Oceania'},
-            {'continent':'oceania', 'language':'DE', 'value':'Australien und Ozeanien'}
-        ]
-    )
+    langTable = sa.Table('language', meta)
+    for lc in languageCodes:
+        insert(langTable).values(name=lc)
+
+    contTable =  sa.Table('continent', meta)
+    contI18nTable = sa.Table('continent_translation', meta)
+    for cont in continents:
+        insert(contTable).values(name=cont[0])
+        insert(contI18nTable).values(continent=cont[0], language='EN', value=cont[1])
+        insert(contI18nTable).values(continent=cont[0], language='DE', value=cont[2])
 
     countryTable =  sa.Table('country', meta)
-    countryList = []
-    for c in countries:
-        dct = {'name':c[0], 'continent':c[2]}
-        countryList.append(dct)
-    op.bulk_insert(countryTable, countryList)
-
     countryI18nTable =  sa.Table('country_translation', meta)
-    countryI18nList = []
-    for c in countries:
-        dct1 = {'country':c[0], 'language':'EN', 'value':c[3]}
-        dct2 = {'country':c[0], 'language':'DE', 'value':c[4]}
-        countryI18nList.append(dct1)
-        countryI18nList.append(dct2)
-    op.bulk_insert(countryI18nTable, countryI18nList)
-
     countryCodeTable =  sa.Table('country_code', meta)
-    countryCodeList = []
     for c in countries:
-        dct = {'country':c[0], 'code':c[1]}
-        countryCodeList.append(dct)
-    op.bulk_insert(countryCodeTable, countryCodeList)
+        insert(countryTable).values(name=c[0], continent=c[2])
+        insert(countryI18nTable).values(country=c[0], language='EN', value=c[3])
+        insert(countryI18nTable).values(country=c[0], language='DE', value=c[4])
+        insert(countryCodeTable).values(country=c[0], code=c[1])
 
 
 def downgrade():
     meta = sa.MetaData(bind=op.get_bind())
     meta.reflect()
+
     countryCodeTable =  sa.Table('country_code', meta)
     countryI18nTable =  sa.Table('country_translation', meta)
     countryTable =  sa.Table('country', meta)
     for c in countries:
-        sa.delete(countryCodeTable).where(countryCodeTable.c.country == c[0])
-        sa.delete(countryI18nTable).where(countryI18nTable.c.country == c[0])
-        sa.delete(countryTable).where(countryTable.c.name == c[0])
+        delete(countryCodeTable).where(countryCodeTable.c.country == c[0])
+        delete(countryI18nTable).where(countryI18nTable.c.country == c[0])
+        delete(countryTable).where(countryTable.c.name == c[0])
     
-    continents = (
-        'africa',
-        'asia',
-        'europe',
-        'north_america',
-        'south_america',
-        'oceania'
-    )
     continentTable = sa.Table('continent', meta)
     continentI18nTable = sa.Table('continent_translation', meta)
     for c in continents:
-        sa.delete(continentTable).where(continentTable.c.name == c)
-        sa.delete(continentI18nTable).where(continentI18nTable.c.continent == c)
+        delete(continentTable).where(continentTable.c.name == c[0])
+        delete(continentI18nTable).where(continentI18nTable.c.continent == c[0])
     
     languageTable = sa.Table('language', meta)
-    sa.delete(languageTable).where(languageTable.c.code == 'EN')
-    sa.delete(languageTable).where(languageTable.c.code == 'DE')
+    for lang in languageCodes:
+        delete(languageTable).where(languageTable.c.code == lang)
