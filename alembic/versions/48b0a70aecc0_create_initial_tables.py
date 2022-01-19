@@ -29,51 +29,52 @@ def upgrade():
     )
     op.create_table(
         'continent_translation',
-        sa.Column('continent', sa.VARCHAR(64), nullable=False),
-        sa.Column('language', sa.CHAR(2), nullable=False),
+        sa.Column('continent_name', sa.VARCHAR(64), nullable=False),
+        sa.Column('language_code', sa.CHAR(2), nullable=False),
         sa.Column('value', sa.VARCHAR(128), nullable=False),
-        sa.PrimaryKeyConstraint('continent', 'language', name='pk_continent_translation'),
-        sa.ForeignKeyConstraint(['continent'], ['continent.name'], name='fk_continent_translation_cont'),
-        sa.ForeignKeyConstraint(['language'], ['language.code'], name='fk_continent_translation_lang')
+        sa.PrimaryKeyConstraint('continent_name', 'language_code', name='pk_continent_translation'),
+        sa.ForeignKeyConstraint(['continent_name'], ['continent.name'], name='fk_continent_translation_cont'),
+        sa.ForeignKeyConstraint(['language_code'], ['language.code'], name='fk_continent_translation_lang')
     )
     op.create_table(
         'country',
         sa.Column('name', sa.VARCHAR(64), nullable=False, comment='provided name in snake-case'),
-        sa.Column('continent', sa.VARCHAR(64), nullable=False),
+        sa.Column('continent_name', sa.VARCHAR(64), nullable=False),
+        sa.Column('is_producer', sa.BOOLEAN, default=False),
         sa.PrimaryKeyConstraint('name', name='pk_country'),
-        sa.ForeignKeyConstraint(['continent'], ['continent.name'], name='fk_country_cont')
+        sa.ForeignKeyConstraint(['continent_name'], ['continent.name'], name='fk_country_cont')
     )
     op.create_table(
         'country_translation',
-        sa.Column('country', sa.VARCHAR(64), nullable=False),
-        sa.Column('language', sa.CHAR(2), nullable=False),
+        sa.Column('country_name', sa.VARCHAR(64), nullable=False),
+        sa.Column('language_code', sa.CHAR(2), nullable=False),
         sa.Column('value', sa.VARCHAR(128), nullable=False),
-        sa.PrimaryKeyConstraint('country', 'language', name='pk_country_translation'),
-        sa.ForeignKeyConstraint(['country'], ['country.name'], name='fk_country_translation_count'),
-        sa.ForeignKeyConstraint(['language'], ['language.code'], name='fk_country_translation_lang')
+        sa.PrimaryKeyConstraint('country_name', 'language_code', name='pk_country_translation'),
+        sa.ForeignKeyConstraint(['country_name'], ['country.name'], name='fk_country_translation_count'),
+        sa.ForeignKeyConstraint(['language_code'], ['language.code'], name='fk_country_translation_lang')
     )
     op.create_table(
         'country_code',
-        sa.Column('country', sa.VARCHAR(64), nullable=False),
+        sa.Column('country_name', sa.VARCHAR(64), nullable=False),
         sa.Column('code', sa.CHAR(2), nullable=False),
-        sa.PrimaryKeyConstraint('country', name='pk_country_code'),
-        sa.ForeignKeyConstraint(['country'], ['country.name'], name='fk_country_code_count'),
+        sa.PrimaryKeyConstraint('country_name', name='pk_country_code'),
+        sa.ForeignKeyConstraint(['country_name'], ['country.name'], name='fk_country_code_count'),
     )
     op.create_table(
         'region',
         sa.Column('name', sa.VARCHAR(64), nullable=False, comment='provided name in snake-case'),
-        sa.Column('country', sa.VARCHAR(64), nullable=False),
+        sa.Column('country_name', sa.VARCHAR(64), nullable=False),
         sa.Column('display_name', sa.VARCHAR(128), nullable=False, comment='original name in latin alphabet'),
         sa.PrimaryKeyConstraint('name', name='pk_region'),
-        sa.ForeignKeyConstraint(['country'], ['country.name'], name='fk_region_country')
+        sa.ForeignKeyConstraint(['country_name'], ['country.name'], name='fk_region_country')
     )
     op.create_table(
         'washing_station',
         sa.Column('id', sa.INTEGER, autoincrement=True, comment='is added by crawler -> autogenerate id'),
-        sa.Column('region', sa.VARCHAR(64), nullable=False),
+        sa.Column('region_name', sa.VARCHAR(64), nullable=False),
         sa.Column('display_name', sa.VARCHAR(128), nullable=False, comment='original name in latin alphabet'),
         sa.PrimaryKeyConstraint('id', name='pk_washing_station'),
-        sa.ForeignKeyConstraint(['region'], ['region.name'], name='fk_washing_station_reg')
+        sa.ForeignKeyConstraint(['region_name'], ['region.name'], name='fk_washing_station_reg')
     )
     op.create_table(
         'producer',
@@ -85,22 +86,22 @@ def upgrade():
         'farm',
         sa.Column('id', sa.INTEGER, autoincrement=True, comment='is added by crawler -> autogenerate id'),
         sa.Column('display_name', sa.VARCHAR(128), nullable=False, comment='original name in latin alphabet'),
-        sa.Column('region', sa.VARCHAR(64), nullable=False),
+        sa.Column('region_name', sa.VARCHAR(64), nullable=False),
         sa.Column('producer_id', sa.INTEGER),
         sa.Column('elevation_min', sa.INTEGER, comment='in masl'),
         sa.Column('elevation_max', sa.INTEGER, comment='in masl'),
         sa.PrimaryKeyConstraint('id', name='pk_farm'),
-        sa.ForeignKeyConstraint(['region'], ['region.name'], name='fk_farm_reg'),
+        sa.ForeignKeyConstraint(['region_name'], ['region.name'], name='fk_farm_reg'),
         sa.ForeignKeyConstraint(['producer_id'], ['producer.id'], name='fk_farm_prod')
     )
     op.create_table(
         'roaster',
         sa.Column('id', sa.INTEGER, autoincrement=True, comment='is added by crawler -> autogenerate id'),
-        sa.Column('country', sa.VARCHAR(64), nullable=False),
+        sa.Column('country_name', sa.VARCHAR(64), nullable=False),
         sa.Column('display_name', sa.VARCHAR(128), nullable=False, comment='original name in latin alphabet'),
         sa.Column('url', sa.VARCHAR(256)),
         sa.PrimaryKeyConstraint('id', name='pk_roaster'),
-        sa.ForeignKeyConstraint(['country'], ['country.name'], name='fk_roaster_count')
+        sa.ForeignKeyConstraint(['country_name'], ['country.name'], name='fk_roaster_count')
     )
     op.create_table(
         'flavour',
@@ -121,11 +122,11 @@ def upgrade():
     op.create_table(
         'flavour_translation',
         sa.Column('flavour_id', sa.INTEGER, nullable=False),
-        sa.Column('language', sa.CHAR(2), nullable=False),
+        sa.Column('language_code', sa.CHAR(2), nullable=False),
         sa.Column('value', sa.VARCHAR(128), nullable=False),
-        sa.PrimaryKeyConstraint('flavour_id', 'language', name='pk_flavour_translation'),
+        sa.PrimaryKeyConstraint('flavour_id', 'language_code', name='pk_flavour_translation'),
         sa.ForeignKeyConstraint(['flavour_id'], ['flavour.id'], name='fk_flavour_translation_flav'),
-        sa.ForeignKeyConstraint(['language'], ['language.code'], name='fk_flavour_translation_lang')
+        sa.ForeignKeyConstraint(['language_code'], ['language.code'], name='fk_flavour_translation_lang')
     )
     op.create_table(
         'processing',
@@ -136,12 +137,12 @@ def upgrade():
     )
     op.create_table(
         'processing_translation',
-        sa.Column('processing', sa.VARCHAR(64), primary_key=True),
-        sa.Column('language', sa.CHAR(2), primary_key=True),
+        sa.Column('processing_name', sa.VARCHAR(64), primary_key=True),
+        sa.Column('language_code', sa.CHAR(2), primary_key=True),
         sa.Column('value', sa.VARCHAR(128), nullable=False),
-        sa.PrimaryKeyConstraint('processing', 'language', name='pk_processing_translation'),
-        sa.ForeignKeyConstraint(['processing'], ['processing.name'], name='fk_processing_translation_proc'),
-        sa.ForeignKeyConstraint(['language'], ['language.code'], name='fk_processing_translation_lang')
+        sa.PrimaryKeyConstraint('processing_name', 'language_code', name='pk_processing_translation'),
+        sa.ForeignKeyConstraint(['processing_name'], ['processing.name'], name='fk_processing_translation_proc'),
+        sa.ForeignKeyConstraint(['language_code'], ['language.code'], name='fk_processing_translation_lang')
     )
     op.create_table(
         'variety',
@@ -160,35 +161,52 @@ def upgrade():
     op.create_table(
         'green',
         sa.Column('id', sa.INTEGER, autoincrement=True),
-        sa.Column('region', sa.VARCHAR(64), nullable=False),
+        sa.Column('region_anme', sa.VARCHAR(64), nullable=False),
         sa.Column('washing_station_id', sa.INTEGER),
         sa.Column('farm_id', sa.INTEGER),
         sa.Column('producer_id', sa.INTEGER),
         sa.Column('elevation_min', sa.INTEGER),
         sa.Column('elevation_max', sa.INTEGER),
-        sa.Column('processing', sa.VARCHAR(64)),
+        sa.Column('processing_name', sa.VARCHAR(64)),
         sa.PrimaryKeyConstraint('id', name='pk_green'),
-        sa.ForeignKeyConstraint(['region'], ['region.name'], name='fk_green_reg'),
+        sa.ForeignKeyConstraint(['region_anme'], ['region.name'], name='fk_green_reg'),
         sa.ForeignKeyConstraint(['washing_station_id'], ['washing_station.id'], name='fk_green_wash'),
         sa.ForeignKeyConstraint(['farm_id'], ['farm.id'], name='fk_green_farm'),
         sa.ForeignKeyConstraint(['producer_id'], ['producer.id'], name='fk_green_prod'),
-        sa.ForeignKeyConstraint(['processing'], ['processing.name'], name='fk_green_proc')
+        sa.ForeignKeyConstraint(['processing_name'], ['processing.name'], name='fk_green_proc')
     )
     op.create_table(
         'green_varieties',
         sa.Column('green_id', sa.INTEGER, nullable=False),
-        sa.Column('variety', sa.VARCHAR(64), nullable=False),
-        sa.PrimaryKeyConstraint('green_id', 'variety', name='pk_green_varieties'),
+        sa.Column('variety_name', sa.VARCHAR(64), nullable=False),
+        sa.PrimaryKeyConstraint('green_id', 'variety_name', name='pk_green_varieties'),
         sa.ForeignKeyConstraint(['green_id'], ['green.id'], name='fk_green_varieties_green'),
-        sa.ForeignKeyConstraint(['variety'], ['variety.name'], name='fk_green_varieties_var')
+        sa.ForeignKeyConstraint(['variety_name'], ['variety.name'], name='fk_green_varieties_var')
+    )
+    op.create_table(
+        'roast',
+        sa.Column('name', sa.VARCHAR(64), nullable=False),
+        sa.PrimaryKeyConstraint('name', name='pk_roast')
+    )
+    op.create_table(
+        'roast_translation',
+        sa.Column('roast_name', sa.VARCHAR(64), nullable=False),
+        sa.Column('language_code', sa.CHAR(2), nullable=False),
+        sa.Column('value', sa.VARCHAR(128), nullable=False),
+        sa.PrimaryKeyConstraint('roast_name', 'language_code', name='pk_roast_translation'),
+        sa.ForeignKeyConstraint(['roast_name'], ['roast.name'], name='fk_roast_translation_roast'),
+        sa.ForeignKeyConstraint(['language_code'], ['language.code'], name='fk_roast_translation_lang')
     )
     op.create_table(
         'coffee',
         sa.Column('id', sa.INTEGER, autoincrement=True),
         sa.Column('display_name', sa.VARCHAR(128), nullable=False),
         sa.Column('roaster_id', sa.INTEGER, nullable=False),
+        sa.Column('roast_name', sa.VARCHAR(64)),
+        sa.Column('score', sa.INTEGER),
         sa.PrimaryKeyConstraint('id', name='pk_coffee'),
-        sa.ForeignKeyConstraint(['roaster_id'], ['roaster.id'], name='fk_coffee_roaster'),
+        sa.ForeignKeyConstraint(['roast_name'], ['roast.name'], name='fk_coffee_roast'),
+        sa.ForeignKeyConstraint(['roaster_id'], ['roaster.id'], name='fk_coffee_roaster')
     )
     op.create_table(
         'coffee_greens',
@@ -224,6 +242,8 @@ def downgrade():
     op.drop_table('coffee_flavours')
     op.drop_table('coffee_greens')
     op.drop_table('coffee')
+    op.drop_table('roast_translation')
+    op.drop_table('roast')
     op.drop_table('green_varieties')
     op.drop_table('green')
     op.drop_table('variety_inheritance')
