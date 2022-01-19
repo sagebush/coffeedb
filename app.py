@@ -11,7 +11,6 @@ app = FlaskApp(__name__, specification_dir='openapi/')
 app.add_api('coffeeDbApi.yaml', strict_validation=True)
 
 dbUrl = os.getenv('DB_URL')
-print(dbUrl)
 dbengine = create_engine(dbUrl, convert_unicode=True)
 
 application = app.app

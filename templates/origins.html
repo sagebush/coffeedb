@@ -2,7 +2,10 @@
 
 {% block content %}
     <h1>{% block title %}Origins{% endblock %}</h1>
-    {% for origin in origins %}
-        {{origin.name}}, {{origin.continent}}<br>
+    {% for continent in continents %}
+        <h2>{{continent[0]}}</h2><br>
+        {% for country in continent[1] %}
+            {{country.displayName}}<br>
+        {% endfor %}
     {% endfor %}
 {% endblock %}
