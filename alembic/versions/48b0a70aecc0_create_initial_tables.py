@@ -65,7 +65,7 @@ def upgrade():
         sa.Column('name', sa.VARCHAR(64), nullable=False, comment='provided name in snake-case'),
         sa.Column('country_name', sa.VARCHAR(64), nullable=False),
         sa.Column('display_name', sa.VARCHAR(128), nullable=False, comment='original name in latin alphabet'),
-        sa.PrimaryKeyConstraint('name', name='pk_region'),
+        sa.PrimaryKeyConstraint('name', 'country_name' , name='pk_region'),
         sa.ForeignKeyConstraint(['country_name'], ['country.name'], name='fk_region_country')
     )
     op.create_table(
