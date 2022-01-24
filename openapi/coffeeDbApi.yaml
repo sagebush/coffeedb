@@ -7,26 +7,39 @@ servers:
   - url: http://databaseof.coffee/
 
 paths:
-  /origins:
+  /{language}/origins:
     get:
       summary: List of origins
       operationId: getOrigins
       x-openapi-router-controller: api
+      parameters:
+        - name: language
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/LanguageCode"
       responses:
         "200":
           $ref: "#/components/responses/LocationsResp"
-#  /origins/{origin}/regions:
-#    get:
-#      summary: List of regions in the given origin
-#      parameters:
-#        - name: origin
-#          in: path
-#          required: true
-#          schema:
-#            $ref: "#/components/schemas/RefName"
-#      responses:
-#        "200":
-#          $ref: "#/components/responses/LocationsResp"
+  /{language}/origins/{origin}:
+    get:
+      summary: List of regions in the given origin
+      operationId: getRegions
+      x-openapi-router-controller: api
+      parameters:
+        - name: language
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/LanguageCode"
+        - name: origin
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/RefName"
+      responses:
+        "200":
+          $ref: "#/components/responses/LocationsResp"
 #  /origins/{origin}/{region}/producers:
 #    get:
 #      summary: List of producers from a region
@@ -44,39 +57,71 @@ paths:
 #      responses:
 #        "200":
 #          $ref: "#/components/responses/LocationsResp"
-#  /varieties:
-#    get:
-#      summary: List of all varieties
-#      responses:
-#        "200":
-#          $ref: "#/components/responses/ItemsResp"
-#  /processes:
-#    get:
-#      summary: List of all processes
-#      responses:
-#        "200":
-#          $ref: "#/components/responses/ItemsResp"
-#  /roaterCountries:
-#    get:
-#      summary: List of countries of roasters
-#      responses:
-#        "200":
-#          description: List of country codes
-#          content:
-#            text/html:
-#              schema:
-#                type: string
-#            application/json:
-#              schema:
-#                type: array
-#                items:
-#                  $ref: "#/components/schemas/CountryCode"
-#  /roasters:
-#    get:
-#      summary: List of all roasters
-#      responses:
-#        "200":
-#          $ref: "#/components/responses/RoasterResp"
+  /{language}/varieties:
+    get:
+      summary: List of all varieties
+      operationId: getVarieties
+      x-openapi-router-controller: api
+      parameters:
+        - name: language
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/LanguageCode"
+      responses:
+        "200":
+          $ref: "#/components/responses/ItemsResp"
+  /{language}/processing:
+    get:
+      summary: List of all processes
+      operationId: getProcessing
+      x-openapi-router-controller: api
+      parameters:
+        - name: language
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/LanguageCode"
+      responses:
+        "200":
+          $ref: "#/components/responses/ItemsResp"
+  /{language}/roastercountries:
+    get:
+      summary: List of countries of roasters
+      operationId: getRoasterCountries
+      x-openapi-router-controller: api
+      parameters:
+        - name: language
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/LanguageCode"
+      responses:
+        "200":
+          description: List of country codes
+          content:
+            text/html:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CountryCode"
+  /{language}/roasters:
+    get:
+      summary: List of all roasters
+      operationId: getRoasters
+      x-openapi-router-controller: api
+      parameters:
+        - name: language
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/LanguageCode"
+      responses:
+        "200":
+          $ref: "#/components/responses/RoasterResp"
 #  /roasters/{countryCode}:
 #    get:
 #      summary: List of all roasters in the given country
@@ -235,7 +280,7 @@ components:
   schemas:
     RefName:
       type: string
-      format: "^[a-z]{2-64}$"
+      format: "^[a-z_]{2-64}$"
     DisplayName:
       type: string
       minLength: 2
@@ -243,14 +288,11 @@ components:
     CountryCode:
       description: Two letter country code following iso-3166 alpha-2
       type: string
-      format: "^[a-z]{2}$"
+      format: "^[A-Z]{2}$"
     LanguageCode:
       description: Two letter code following ISO-639-1 for each supported language
       type: string
-      enum: [en, de]
-    Roast:
-      type: string
-      enum: [filter, onmi, espresso]
+      format: "^[a-z]{2}$"
     NamedId:
       type: object
       properties:
@@ -303,7 +345,7 @@ components:
         roaster:
           $ref: "#/components/schemas/Roaster"
         roast:
-          $ref: "#/components/schemas/Roast"
+          $ref: "#/components/schemas/NamedId"
         flavourNotes:
           type: array
           items:
@@ -356,7 +398,7 @@ components:
         roasterCountry:
           $ref: "#/components/schemas/CountryCode"
         roast:
-          $ref: "#/components/schemas/Roast"
+          $ref: "#/components/schemas/NamedId"
         tastingnotes:
           type: array
           items:

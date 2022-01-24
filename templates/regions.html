@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %}{{params.title}}{% endblock %}</h1>
+    {% for region in params.regions %}
+        {{region['displayName']}}<br>
+    {% endfor %}
+{% endblock %}

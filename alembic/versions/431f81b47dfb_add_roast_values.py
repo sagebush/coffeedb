@@ -30,8 +30,8 @@ def upgrade():
     roast_translation_table = sa.Table('roast_translation', meta)
     for r in roastValues:
         op.execute(insert(roast_table).values(name=r[0]))
-        op.execute(insert(roast_translation_table).values(roast_name=r[0], language_code='EN', value=r[1]))
-        op.execute(insert(roast_translation_table).values(roast_name=r[0], language_code='DE', value=r[2]))
+        op.execute(insert(roast_translation_table).values(roast_name=r[0], language_code='en', value=r[1]))
+        op.execute(insert(roast_translation_table).values(roast_name=r[0], language_code='de', value=r[2]))
 
 
 def downgrade():
@@ -41,6 +41,6 @@ def downgrade():
     roast_table = sa.Table('roast', meta)
     roast_translation_table = sa.Table('roast_translation', meta)
     for r in roastValues:
-        op.execute(delete(roast_table).where(name=r[0]))
         op.execute(delete(roast_translation_table).where(roast_name=r[0]))
+        op.execute(delete(roast_table).where(name=r[0]))
 

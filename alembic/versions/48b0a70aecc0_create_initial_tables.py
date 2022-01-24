@@ -7,9 +7,6 @@ Create Date: 2022-01-10 20:33:12.639293
 """
 from alembic import op
 import sqlalchemy as sa
-from alembic import command, config
-from sqlalchemy.sql.schema import ForeignKey, UniqueConstraint
-
 
 # revision identifiers, used by Alembic.
 revision = '48b0a70aecc0'
@@ -40,9 +37,16 @@ def upgrade():
         'country',
         sa.Column('name', sa.VARCHAR(64), nullable=False, comment='provided name in snake-case'),
         sa.Column('continent_name', sa.VARCHAR(64), nullable=False),
-        sa.Column('is_producer', sa.BOOLEAN, default=False),
         sa.PrimaryKeyConstraint('name', name='pk_country'),
         sa.ForeignKeyConstraint(['continent_name'], ['continent.name'], name='fk_country_cont')
+    )
+    op.create_table(
+        'country_roles',
+        sa.Column('country_name', sa.VARCHAR(64), nullable=False),
+        sa.Column('has_producer', sa.BOOLEAN, default=False),
+        sa.Column('has_roaster', sa.BOOLEAN, default=False),
+        sa.PrimaryKeyConstraint('country_name', name='pk_country'),
+        sa.ForeignKeyConstraint(['country_name'], ['country.name'], name='fk_country_roles_count')
     )
     op.create_table(
         'country_translation',
@@ -260,6 +264,7 @@ def downgrade():
     op.drop_table('region')
     op.drop_table('country_code')
     op.drop_table('country_translation')
+    op.drop_table('country_roles')
     op.drop_table('country')
     op.drop_table('continent_translation')
     op.drop_table('continent')

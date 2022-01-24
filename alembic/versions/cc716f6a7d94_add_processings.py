@@ -31,7 +31,7 @@ processings = (
     ('double_anaerobic', 'anaerobic', 'double anaerobic fermentation', 'doppelt anaerobe Fermentation'),
     ('complex_anaerobic', 'anaerobic', 'complex anaerobic fermentation', 'komplexe anaerobe Fermentation'),
     ('thermic_shock_anaerobic', 'complex_anaerobic','thermal shock anaerobic', 'anaerober thermischer Schock'),
-    ('other', '', '-', '-')
+    ('other', '', 'other', 'andere')
 )
 
 def upgrade():
@@ -45,8 +45,8 @@ def upgrade():
             op.execute(insert(procTable).values(name=proc[0]))
         else:
             op.execute(insert(procTable).values(name=proc[0],parent_processing=proc[1]))
-        op.execute(insert(procTranslationTable).values(processing_name=proc[0], language_code='EN', value=proc[2]))
-        op.execute(insert(procTranslationTable).values(processing_name=proc[0], language_code='DE', value=proc[3]))
+        op.execute(insert(procTranslationTable).values(processing_name=proc[0], language_code='en', value=proc[2]))
+        op.execute(insert(procTranslationTable).values(processing_name=proc[0], language_code='de', value=proc[3]))
 
 
 def downgrade():

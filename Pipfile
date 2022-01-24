@@ -12,6 +12,9 @@ alembic = "*"
 mariadb = "*"
 marshmallow-sqlalchemy = "*"
 python-dotenv = "*"
+alembic-utils = "*"
+sqlalchemy-utils = "*"
+python-i18n = {extras = ["yaml"], version = "*"}
 
 [dev-packages]
 autopep8 = "*"

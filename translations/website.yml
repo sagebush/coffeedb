@@ -1,0 +1,37 @@
+---
+- key: region_title
+  translations:
+    en: Regions of ${country}
+    de: Regionen in ${country}
+- key: region_other_region
+  translations:
+    en: Other
+    de: Andere
+- key: origins_title
+  translations:
+    en: Origin countries
+    de: Herkunftsländer
+- key: roastercountries_title
+  translations:
+    en: Countries with registered roasteries
+    de: Länder der erfassten Röstereien
+- key: roasters_in_country_title
+  translations:
+    en: Roasters in ${country}
+    de: Röstereien in ${country}
+- key: roasters_title
+  translations:
+    en: Registered roasters
+    de: Registrierte Röstereien
+- key: processing_title
+  translations:
+    en: Processing
+    de: Aufbereitung
+- key: varieties_title
+  translations:
+    en: Varieties
+    de: Varietäten
+- key: other_value
+  translations:
+    en: other...
+    de: andere...

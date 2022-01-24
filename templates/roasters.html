@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %}{{title}}{% endblock %}</h1>
+    {% for r in roasters %}
+        <a href="{{r.url}}">{{r.displayName}}</a> - {{r.countryDisplayName}}
+        <br>
+    {% endfor %}
+{% endblock %}

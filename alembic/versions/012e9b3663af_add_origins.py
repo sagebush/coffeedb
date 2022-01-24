@@ -26,106 +26,116 @@ continents = (
 )
 countries = (
     # the worlds largest coffee producers
-    ('brazil', 'BR', 'south_america', 'Brazil', 'Brazilien', True),
-    ('vietnam', 'VN', 'asia', 'Vietnam', 'Vietnam', True),
-    ('colombia', 'CO', 'south_america', 'Colombia', 'Columbien', True),
-    ('indonesia', 'ID', 'asia', 'Indonesia', 'Indonesien', True),
-    ('ethiopia', 'ET', 'africa', 'Ethiopia', 'Äthiopien', True),
-    ('honduras', 'HN', 'south_america', 'Honduras', 'Honduras', True),
-    ('india', 'IN', 'asia', 'India', 'Indien', True),
-    ('uganda', 'UG', 'africa', 'Uganda', 'Uganda', True),
-    ('mexico', 'MX', 'south_america', 'Mexico', 'Mexico', True),
-    ('guatemala', 'GT', 'south_america', 'Guatemala', 'Guatemala', True),
-    ('peru', 'PE', 'south_america', 'Peru', 'Peru', True),
-    ('nicaragua', 'NI', 'south_america', 'Nicaragua', 'Nicaragua', True),
-    ('china', 'CN', 'asia', 'China', 'China', True),
-    ('ivory_coast', 'CI', 'africa', 'Ivory Coast', 'Elfenbeinküste', True),
-    ('costa_rica', 'CR', 'south_america', 'Costa Rica', 'Costa Rica', True),
-    ('kenya', 'KE', 'africa', 'Kenya', 'Kenya', True),
-    ('papua_new_guinea', 'PG', 'oceania', 'Papua New Guinea', 'Papua Neu Guinea', True),
-    ('tanzania', 'TZ', 'africa', 'Tanzania', 'Tanzania', True),
-    ('el_salvador', 'SV', 'south_america', 'El Salvador', 'El Salvador', True),
-    ('ecuador', 'EC', 'south_america', 'Ecuador', 'Ecuador', True),
-    ('cameroon', 'CM', 'africa', 'Cameroon', 'Kamerun', True),
-    ('laos', 'LA', 'asia', 'Laos', 'Laos', True),
-    ('madagascar', 'MG', 'africa', 'Madagascar', 'Madagaskar', True),
-    ('gabon', 'GA', 'africa', 'Gabon', 'Gabon', True),
-    ('thailand', 'TH', 'asia', 'Thailand', 'Thailand', True),
-    ('venezuela', 'VE', 'south_america', 'Venezuela', 'Venezuela', True),
-    ('dominican_republic', 'DO', 'south_america', 'Dominican Republic', 'Dominikanische Republik', True),
-    ('haiti', 'HT', 'south_america', 'Haiti', 'Haiti', True),
-    ('congo', 'CG', 'africa', 'Congo', 'Kongo', True),
-    ('rwanda', 'RW', 'africa', 'Rwanda', 'Ruanda', True),
-    ('burundi', 'BI', 'africa', 'Burundi', 'Burundi', True),
-    ('philippines', 'PH', 'asia', 'Philippines', 'Philippinen', True),
-    ('togo', 'TG', 'africa', 'Togo', 'Togo', True),
-    ('guinea', 'GN', 'africa', 'Guinea', 'Guinea', True),
-    ('yemen', 'YE', 'asia', 'Yemen', 'Yemen', True),
-    ('cuba', 'CU', 'south_america', 'Cuba', 'Kuba', True),
-    ('panama', 'PA', 'south_america', 'Panama', 'Panama', True),
-    ('bolivia', 'BO', 'south_america', 'Bolivia', 'Bolivien', True),
-    ('central_african_republic', 'CF', 'africa', 'Central African Republic', 'Zentralafrikanische Republik', True),
-    ('nigeria', 'NG', 'africa', 'Nigeria', 'Nigeria', True),
-    ('ghana', 'GH', 'africa', 'Ghana', 'Ghana', True),
-    ('sierra_leone', 'SL', 'africa', 'Sierra Leone', 'Sierra Leone', True),
-    ('jamaica', 'JM', 'south_america', 'Jamaica', 'Jamaika', True),
-    ('paraguay', 'PY', 'south_america', 'Paraguay', 'Paraguay', True),
-    ('malawi', 'MW', 'africa', 'Malawi', 'Malawi', True),
-    ('trinidad_tobago', 'TT', 'africa', 'Trinidad and Tobago', 'Trinidad und Tobago', True),
-    ('zimbabwe', 'ZW', 'africa', 'Zimbabwe', 'Zimbabwe', True),
-    ('liberia', 'LR', 'africa', 'Liberia', 'Liberia', True),
-    ('zambia', 'ZM', 'africa', 'Zambia', 'Zambia', True),
+    ('brazil', 'BR', 'south_america', 'Brazil', 'Brazilien', True, False),
+    ('vietnam', 'VN', 'asia', 'Vietnam', 'Vietnam', True, False),
+    ('colombia', 'CO', 'south_america', 'Colombia', 'Kolumbien', True, False),
+    ('indonesia', 'ID', 'asia', 'Indonesia', 'Indonesien', True, False),
+    ('ethiopia', 'ET', 'africa', 'Ethiopia', 'Äthiopien', True, False),
+    ('honduras', 'HN', 'south_america', 'Honduras', 'Honduras', True, False),
+    ('india', 'IN', 'asia', 'India', 'Indien', True, False),
+    ('uganda', 'UG', 'africa', 'Uganda', 'Uganda', True, False),
+    ('mexico', 'MX', 'south_america', 'Mexico', 'Mexico', True, False),
+    ('guatemala', 'GT', 'south_america', 'Guatemala', 'Guatemala', True, False),
+    ('peru', 'PE', 'south_america', 'Peru', 'Peru', True, False),
+    ('nicaragua', 'NI', 'south_america', 'Nicaragua', 'Nicaragua', True, False),
+    ('china', 'CN', 'asia', 'China', 'China', True, False),
+    ('ivory_coast', 'CI', 'africa', 'Ivory Coast', 'Elfenbeinküste', True, False),
+    ('costa_rica', 'CR', 'south_america', 'Costa Rica', 'Costa Rica', True, False),
+    ('kenya', 'KE', 'africa', 'Kenya', 'Kenya', True, False),
+    ('papua_new_guinea', 'PG', 'oceania', 'Papua New Guinea', 'Papua Neu Guinea', True, False),
+    ('tanzania', 'TZ', 'africa', 'Tanzania', 'Tanzania', True, False),
+    ('el_salvador', 'SV', 'south_america', 'El Salvador', 'El Salvador', True, False),
+    ('ecuador', 'EC', 'south_america', 'Ecuador', 'Ecuador', True, False),
+    ('cameroon', 'CM', 'africa', 'Cameroon', 'Kamerun', True, False),
+    ('laos', 'LA', 'asia', 'Laos', 'Laos', True, False),
+    ('madagascar', 'MG', 'africa', 'Madagascar', 'Madagaskar', True, False),
+    ('gabon', 'GA', 'africa', 'Gabon', 'Gabon', True, False),
+    ('thailand', 'TH', 'asia', 'Thailand', 'Thailand', True, False),
+    ('venezuela', 'VE', 'south_america', 'Venezuela', 'Venezuela', True, False),
+    ('dominican_republic', 'DO', 'south_america', 'Dominican Republic', 'Dominikanische Republik', True, False),
+    ('haiti', 'HT', 'south_america', 'Haiti', 'Haiti', True, False),
+    ('congo', 'CG', 'africa', 'Congo', 'Kongo', True, False),
+    ('rwanda', 'RW', 'africa', 'Rwanda', 'Ruanda', True, False),
+    ('burundi', 'BI', 'africa', 'Burundi', 'Burundi', True, False),
+    ('philippines', 'PH', 'asia', 'Philippines', 'Philippinen', True, False),
+    ('togo', 'TG', 'africa', 'Togo', 'Togo', True, False),
+    ('guinea', 'GN', 'africa', 'Guinea', 'Guinea', True, False),
+    ('yemen', 'YE', 'asia', 'Yemen', 'Yemen', True, False),
+    ('cuba', 'CU', 'south_america', 'Cuba', 'Kuba', True, False),
+    ('panama', 'PA', 'south_america', 'Panama', 'Panama', True, False),
+    ('bolivia', 'BO', 'south_america', 'Bolivia', 'Bolivien', True, False),
+    ('central_african_republic', 'CF', 'africa', 'Central African Republic', 'Zentralafrikanische Republik', True, False),
+    ('nigeria', 'NG', 'africa', 'Nigeria', 'Nigeria', True, False),
+    ('ghana', 'GH', 'africa', 'Ghana', 'Ghana', True, False),
+    ('sierra_leone', 'SL', 'africa', 'Sierra Leone', 'Sierra Leone', True, False),
+    ('jamaica', 'JM', 'south_america', 'Jamaica', 'Jamaika', True, False),
+    ('paraguay', 'PY', 'south_america', 'Paraguay', 'Paraguay', True, False),
+    ('malawi', 'MW', 'africa', 'Malawi', 'Malawi', True, False),
+    ('trinidad_tobago', 'TT', 'africa', 'Trinidad and Tobago', 'Trinidad und Tobago', True, False),
+    ('zimbabwe', 'ZW', 'africa', 'Zimbabwe', 'Zimbabwe', True, False),
+    ('liberia', 'LR', 'africa', 'Liberia', 'Liberia', True, False),
+    ('zambia', 'ZM', 'africa', 'Zambia', 'Zambia', True, False),
     # some countries I expect roasters to join
-    ('usa', 'US', 'north_america', 'United States of America', 'Vereinigte Staaten von Amerika', False),
-    ('canada', 'CA', 'north_america', 'Canada', 'Kanada', False),
-    ('britain', 'BG', 'europe', 'Great Britain', 'Großbritannien', False),
-    ('ireland', 'IE', 'europe', 'Ireland', 'Irland', False),
-    ('germany', 'DE', 'europe', 'Germany', 'Deutschland', False),
-    ('france', 'FR', 'europe', 'France', 'Frankreich', False),
-    ('spain', 'ES', 'europe', 'Spain', 'Spanien', False),
-    ('portugal', 'PT', 'europe', 'Portugal', 'Portugal', False),
-    ('italy', 'IT', 'europe', 'Italy', 'Italien', False),
-    ('netherlands', 'NL', 'europe', 'Netherland', 'Niederlande', False),
-    ('belgium', 'BE', 'europe', 'Belgium', 'Belgien', False),
-    ('swiss', 'CH', 'europe', 'Switzerland', 'Schweiz', False),
-    ('austria', 'AT', 'europe', 'Austria', 'Österreich', False),
-    ('slovenia', 'SI', 'europe', 'Slovenia', 'Slovenien', False),
-    ('slovakia', 'SK', 'europe', 'Slovakia', 'Slovakei', False),
-    ('hungary', 'HU', 'europe', 'Hungary', 'Ungarn', False),
-    ('czechya', 'CZ', 'europe', 'Czechya', 'Tschechien', False),
-    ('poland', 'PL', 'europe', 'Poland', 'Polen', False),
-    ('denmark', 'DK', 'europe', 'Denmark', 'Dänemark', False),
-    ('sweden', 'SE', 'europe', 'Sweden', 'Schweden', False),
-    ('norway', 'NO', 'europe', 'Norway', 'Norwegen', False),
-    ('finland', 'FI', 'europe', 'Finland', 'Finland', False),
-    ('japan', 'JP', 'asia', 'Japan', 'Japan', False),
-    ('singapore', 'SG', 'asia', 'Singapore', 'Singapur', False)
+    ('usa', 'US', 'north_america', 'United States of America', 'Vereinigte Staaten von Amerika', False, True),
+    ('canada', 'CA', 'north_america', 'Canada', 'Kanada', False, True),
+    ('britain', 'BG', 'europe', 'Great Britain', 'Großbritannien', False, True),
+    ('ireland', 'IE', 'europe', 'Ireland', 'Irland', False, True),
+    ('germany', 'DE', 'europe', 'Germany', 'Deutschland', False, True),
+    ('france', 'FR', 'europe', 'France', 'Frankreich', False, True),
+    ('spain', 'ES', 'europe', 'Spain', 'Spanien', False, True),
+    ('portugal', 'PT', 'europe', 'Portugal', 'Portugal', False, True),
+    ('italy', 'IT', 'europe', 'Italy', 'Italien', False, True),
+    ('netherlands', 'NL', 'europe', 'Netherland', 'Niederlande', False, True),
+    ('belgium', 'BE', 'europe', 'Belgium', 'Belgien', False, True),
+    ('swiss', 'CH', 'europe', 'Switzerland', 'Schweiz', False, True),
+    ('austria', 'AT', 'europe', 'Austria', 'Österreich', False, True),
+    ('slovenia', 'SI', 'europe', 'Slovenia', 'Slovenien', False, True),
+    ('slovakia', 'SK', 'europe', 'Slovakia', 'Slovakei', False, True),
+    ('hungary', 'HU', 'europe', 'Hungary', 'Ungarn', False, True),
+    ('czechya', 'CZ', 'europe', 'Czechya', 'Tschechien', False, True),
+    ('poland', 'PL', 'europe', 'Poland', 'Polen', False, True),
+    ('denmark', 'DK', 'europe', 'Denmark', 'Dänemark', False, True),
+    ('sweden', 'SE', 'europe', 'Sweden', 'Schweden', False, True),
+    ('norway', 'NO', 'europe', 'Norway', 'Norwegen', False, True),
+    ('finland', 'FI', 'europe', 'Finland', 'Finland', False, True),
+    ('japan', 'JP', 'asia', 'Japan', 'Japan', False, True),
+    ('singapore', 'SG', 'asia', 'Singapore', 'Singapur', False, True)
 )
-languageCodes = ('EN', 'DE')
+languageCodes = ('en', 'de')
+
+language_tn = 'language'
+continent_tn = 'continent'
+continentTransl_tn = 'continent_translation'
+country_tn = 'country'
+coutryRoles_tn = 'country_roles'
+country_transl_tn = 'country_translation'
+countryCode_tn = 'country_code'
 
 
 def upgrade():
     meta = sa.MetaData(bind=op.get_bind())
     meta.reflect()
 
-    langTable = sa.Table('language', meta)
+    langTable = sa.Table(language_tn, meta)
     for lc in languageCodes:
         op.execute(insert(langTable).values(code=lc))
         
-    contTable =  sa.Table('continent', meta)
-    contI18nTable = sa.Table('continent_translation', meta)
+    contTable =  sa.Table(continent_tn, meta)
+    contI18nTable = sa.Table(continentTransl_tn, meta)
     for cont in continents:
         op.execute(insert(contTable).values(name=cont[0]))
-        op.execute(insert(contI18nTable).values(continent_name=cont[0], language_code='EN', value=cont[1]))
-        op.execute(insert(contI18nTable).values(continent_name=cont[0], language_code='DE', value=cont[2]))
+        op.execute(insert(contI18nTable).values(continent_name=cont[0], language_code='en', value=cont[1]))
+        op.execute(insert(contI18nTable).values(continent_name=cont[0], language_code='de', value=cont[2]))
 
-    countryTable =  sa.Table('country', meta)
-    countryI18nTable =  sa.Table('country_translation', meta)
-    countryCodeTable =  sa.Table('country_code', meta)
+    countryTable =  sa.Table(country_tn, meta)
+    countryRoleTable =  sa.Table(coutryRoles_tn, meta)
+    countryI18nTable =  sa.Table(country_transl_tn, meta)
+    countryCodeTable =  sa.Table(countryCode_tn, meta)
     for c in countries:
-        op.execute(insert(countryTable).values(name=c[0], continent_name=c[2], is_producer=c[5]))
-        op.execute(insert(countryI18nTable).values(country_name=c[0], language_code='EN', value=c[3]))
-        op.execute(insert(countryI18nTable).values(country_name=c[0], language_code='DE', value=c[4]))
+        op.execute(insert(countryTable).values(name=c[0], continent_name=c[2]))
+        op.execute(insert(countryRoleTable).values(country_name=c[0], has_producer=c[5], has_roaster=c[6]))
+        op.execute(insert(countryI18nTable).values(country_name=c[0], language_code='en', value=c[3]))
+        op.execute(insert(countryI18nTable).values(country_name=c[0], language_code='de', value=c[4]))
         op.execute(insert(countryCodeTable).values(country_name=c[0], code=c[1]))
 
 
@@ -133,20 +143,22 @@ def downgrade():
     meta = sa.MetaData(bind=op.get_bind())
     meta.reflect()
 
-    countryCodeTable =  sa.Table('country_code', meta)
-    countryI18nTable =  sa.Table('country_translation', meta)
-    countryTable =  sa.Table('country', meta)
+    countryRoleTable =  sa.Table(coutryRoles_tn, meta)
+    countryCodeTable =  sa.Table(countryCode_tn, meta)
+    countryI18nTable =  sa.Table(country_transl_tn, meta)
+    countryTable =  sa.Table(country_tn, meta)
     for c in countries:
         op.execute(delete(countryCodeTable).where(countryCodeTable.c.country_name == c[0]))
         op.execute(delete(countryI18nTable).where(countryI18nTable.c.country_name == c[0]))
+        op.execute(delete(countryRoleTable).where(countryTable.c.name == c[0]))
         op.execute(delete(countryTable).where(countryTable.c.name == c[0]))
     
-    continentTable = sa.Table('continent', meta)
-    continentI18nTable = sa.Table('continent_translation', meta)
+    continentTable = sa.Table(continent_tn, meta)
+    continentI18nTable = sa.Table(continentTransl_tn, meta)
     for c in continents:
-        op.execute(delete(continentTable).where(continentTable.c.name == c[0]))
         op.execute(delete(continentI18nTable).where(continentI18nTable.c.continent_name == c[0]))
+        op.execute(delete(continentTable).where(continentTable.c.name == c[0]))
     
-    languageTable = sa.Table('language', meta)
+    languageTable = sa.Table(language_tn, meta)
     for lang in languageCodes:
         op.execute(delete(languageTable).where(languageTable.c.code == lang))
