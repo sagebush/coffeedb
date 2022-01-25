@@ -54,6 +54,17 @@ def getCountryName(connection, country, languageCode):
     rows.close()
     return result
 
+def getRegionName(connection, country, region):
+    query = text(
+        'SELECT display_name' +
+        ' FROM region' + 
+        ' WHERE name = "' + region + '" AND country_name = "' + country + '"'
+    )
+    rows = connection.execute(query)
+    result = rows.fetchone()['display_name']
+    rows.close()
+    return result
+
 def getRegions(connection, country, languageCode):
     query = text(
         'SELECT name AS ' + refName + ', display_name AS ' + displayName +
@@ -118,5 +129,37 @@ def getVarieties(connection):
         'SELECT name AS ' + refName + ', display_name AS ' + displayName +
         ' FROM variety' +
         ' ORDER BY name;'
+    )
+    return exec(connection, query)
+
+def isRegionInCountry(connection, region, country):
+    query = connection.execute(text('SELECT name FROM region WHERE name = "'+region+'" AND country_name = "'+country+'"'))
+    if query.rowcount == 0:
+        query.close()
+        return False
+    return True
+
+def hasCountry(connection, country):
+    query = connection.execute(text('SELECT name FROM country WHERE name = "'+country+'"'))
+    if query.rowcount == 0:
+        query.close()
+        return False
+    return True
+
+def getFarms(connection, region):
+    query = text(
+        'SELECT id AS ' + id + ', display_name AS ' + displayName + ', elevation_min AS elevationMin, elevation_max AS elevationMax' +
+        ' FROM farm' +
+        ' WHERE region_name = "' + region + '"' +
+        ' ORDER BY display_name;'
+    )
+    return exec(connection, query)
+
+def getStations(connection, region):
+    query = text(
+        'SELECT id AS ' + id + ', display_name AS ' + displayName +
+        ' FROM washing_station' +
+        ' WHERE region_name = "' + region + '"' +
+        ' ORDER BY display_name;'
     )
     return exec(connection, query)

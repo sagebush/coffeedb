@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>{% block title %}{{title}}{% endblock %}</h1>
-    {% for p in processing %}
-        {{p.displayName}}<br>
+    {% for d in data %}
+        {{d.displayName}}<br>
     {% endfor %}
 {% endblock %}

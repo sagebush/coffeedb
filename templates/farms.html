@@ -2,8 +2,7 @@
 
 {% block content %}
     <h1>{% block title %}{{title}}{% endblock %}</h1>
-    {% for r in data %}
-        <a href="{{r.url}}">{{r.displayName}}</a> - {{r.countryDisplayName}}
-        <br>
+    {% for farm in farms %}
+        {{farm['displayName']}}<br>
     {% endfor %}
 {% endblock %}

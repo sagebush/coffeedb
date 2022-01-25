@@ -40,6 +40,54 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/LocationsResp"
+  /{language}/origins/{origin}/{region}/farms:
+    get:
+      summary: List of farms in a region
+      operationId: getFarms
+      x-openapi-router-controller: api
+      parameters:
+        - name: language
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/LanguageCode"
+        - name: origin
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/RefName"
+        - name: region
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/RefName"
+      responses:
+        "200":
+          $ref: "#/components/responses/LocationsResp"
+  /{language}/origins/{origin}/{region}/stations:
+    get:
+      summary: List of washind stations in a region
+      operationId: getStations
+      x-openapi-router-controller: api
+      parameters:
+        - name: language
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/LanguageCode"
+        - name: origin
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/RefName"
+        - name: region
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/RefName"
+      responses:
+        "200":
+          $ref: "#/components/responses/LocationsResp"
 #  /origins/{origin}/{region}/producers:
 #    get:
 #      summary: List of producers from a region

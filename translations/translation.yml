@@ -31,6 +31,14 @@
   translations:
     en: Varieties
     de: Varietäten
+- key: farms_in_region_title
+  translations:
+    en: Farms in ${region}, ${country}
+    de: Farmen in ${region}, ${country}
+- key: stations_in_region_title
+  translations:
+    en: Washion stations in ${region}, ${country}
+    de: Waschstationen in ${region}, ${country}
 - key: other_value
   translations:
     en: other...

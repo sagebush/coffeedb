@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>{% block title %}{{title}}{% endblock %}</h1>
-    {% for var in varieties %}
+    {% for var in data %}
         {{var.displayName}}<br>
     {% endfor %}
 {% endblock %}
