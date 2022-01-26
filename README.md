@@ -44,3 +44,12 @@ The newly crawled coffee may not be automatically mappable to the database schem
 
 ## Participating roasters
 Legally it is required to receive written permission from the data provider (the roaster) to scrape the data, store it and make it publicly available. Only roasters that have given this permission can be imported into 
+
+# Getting started
+1. Clone this repository
+2. Install pipenv
+3. Go to the base project folder and execute 'pipenv install'
+4. Prepare a database. I use mariaDB, but since the app uses standard SQL other databases should work as well. Create a database named 'coffeedb' with charset=UTF8.
+5. Create a .env file that contains a string like this: 'DB_URL=dbconnector://user:password@host:port/coffeedb'
+   Fill in your appropriate dbconnector (use 'mariadb+mariadbconnector' under windows and 'mariadb+pymysql' under linux), db user, db password, host and port.
+6. Type 'flask run'
