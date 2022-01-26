@@ -52,4 +52,6 @@ Legally it is required to receive written permission from the data provider (the
 4. Prepare a database. I use mariaDB, but since the app uses standard SQL other databases should work as well. Create a database named 'coffeedb' with charset=UTF8.
 5. Create a .env file that contains a string like this: 'DB_URL=dbconnector://user:password@host:port/coffeedb'
    Fill in your appropriate dbconnector (use 'mariadb+mariadbconnector' under windows and 'mariadb+pymysql' under linux), db user, db password, host and port.
-6. Type 'flask run'
+6. Run 'pipenv shell' to activate the environment
+7. make shure the database is up and run 'alembic upgrade head' to prepare the database
+8. Run 'flask run'
