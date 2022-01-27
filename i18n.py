@@ -3,7 +3,7 @@ import os
 from string import Template
 
 __translations = {}
-__supportedLanguages = ('de', 'en')
+__supported_languages = ('de', 'en')
 
 def load(filename):
     basepath = os.path.dirname(os.path.abspath('__file__'))
@@ -13,10 +13,11 @@ def load(filename):
         for term in termList:
             __translations[term['key']] = term['translations']
 
-def isSupported(languageCode):
-    return languageCode in __supportedLanguages
+def is_supported(language):
+    return language in __supported_languages
 
-def t(id, languageCode, **args):
-    string = __translations[id][languageCode]
+def translate(id, language, **args):
+    string = __translations[id][language]
     t = Template(string)
     return t.safe_substitute(args)
+

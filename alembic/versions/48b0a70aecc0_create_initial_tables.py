@@ -90,12 +90,13 @@ def upgrade():
         'farm',
         sa.Column('id', sa.INTEGER, autoincrement=True, comment='is added by crawler -> autogenerate id'),
         sa.Column('display_name', sa.VARCHAR(128), nullable=False, comment='original name in latin alphabet'),
+        sa.Column('country_name', sa.VARCHAR(64), nullable=False),
         sa.Column('region_name', sa.VARCHAR(64), nullable=False),
         sa.Column('producer_id', sa.INTEGER),
         sa.Column('elevation_min', sa.INTEGER, comment='in masl'),
         sa.Column('elevation_max', sa.INTEGER, comment='in masl'),
         sa.PrimaryKeyConstraint('id', name='pk_farm'),
-        sa.ForeignKeyConstraint(['region_name'], ['region.name'], name='fk_farm_reg'),
+        sa.ForeignKeyConstraint(['country_name', 'region_name'], ['region.country', 'region.name'], name='fk_farm_reg'),
         sa.ForeignKeyConstraint(['producer_id'], ['producer.id'], name='fk_farm_prod')
     )
     op.create_table(

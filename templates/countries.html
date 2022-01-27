@@ -6,7 +6,7 @@
         <h2>{{continent[0]}}</h2><br>
         {% for country in continent[1] %}
             {% if val.addLinks %}
-                <a href="{{url_for('api_getRegions', origin=country.refName, language=val.language)}}">{{country.displayName}}</a>
+                <a href="{{url_for('api_OriginsView_get', origin=country.refName, language=val.language)}}">{{country.displayName}}</a>
             {% else %}
                 {{country.displayName}}
             {% endif %}

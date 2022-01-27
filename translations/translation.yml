@@ -31,14 +31,14 @@
   translations:
     en: Varieties
     de: Varietäten
-- key: farms_in_region_title
+- key: farms_title
   translations:
-    en: Farms in ${region}, ${country}
-    de: Farmen in ${region}, ${country}
-- key: stations_in_region_title
+    en: Coffee farms
+    de: Kaffee Farmen
+- key: stations_title
   translations:
-    en: Washion stations in ${region}, ${country}
-    de: Waschstationen in ${region}, ${country}
+    en: Washion stations
+    de: Waschstationen
 - key: other_value
   translations:
     en: other...

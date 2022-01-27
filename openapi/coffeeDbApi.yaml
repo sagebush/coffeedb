@@ -10,8 +10,8 @@ paths:
   /{language}/origins:
     get:
       summary: List of origins
-      operationId: getOrigins
-      x-openapi-router-controller: api
+      #operationId: getOrigins
+      #x-openapi-router-controller: api
       parameters:
         - name: language
           in: path
@@ -24,8 +24,8 @@ paths:
   /{language}/origins/{origin}:
     get:
       summary: List of regions in the given origin
-      operationId: getRegions
-      x-openapi-router-controller: api
+      #operationId: getRegions
+      #x-openapi-router-controller: api
       parameters:
         - name: language
           in: path
@@ -40,11 +40,11 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/LocationsResp"
-  /{language}/origins/{origin}/{region}/farms:
+  /{language}/farms:
     get:
       summary: List of farms in a region
-      operationId: getFarms
-      x-openapi-router-controller: api
+      #operationId: getFarms
+      #x-openapi-router-controller: api
       parameters:
         - name: language
           in: path
@@ -52,23 +52,25 @@ paths:
           schema:
             $ref: "#/components/schemas/LanguageCode"
         - name: origin
-          in: path
-          required: true
+          in: query
           schema:
             $ref: "#/components/schemas/RefName"
         - name: region
-          in: path
-          required: true
+          in: query
+          schema:
+            $ref: "#/components/schemas/RefName"
+        - name: producer
+          in: query
           schema:
             $ref: "#/components/schemas/RefName"
       responses:
         "200":
           $ref: "#/components/responses/LocationsResp"
-  /{language}/origins/{origin}/{region}/stations:
+  /{language}/stations:
     get:
       summary: List of washind stations in a region
-      operationId: getStations
-      x-openapi-router-controller: api
+      #operationId: getStations
+      #x-openapi-router-controller: api
       parameters:
         - name: language
           in: path
@@ -76,28 +78,26 @@ paths:
           schema:
             $ref: "#/components/schemas/LanguageCode"
         - name: origin
-          in: path
-          required: true
+          in: query
           schema:
             $ref: "#/components/schemas/RefName"
         - name: region
-          in: path
-          required: true
+          in: query
           schema:
             $ref: "#/components/schemas/RefName"
       responses:
         "200":
           $ref: "#/components/responses/LocationsResp"
-#  /origins/{origin}/{region}/producers:
+#  /{language}/origins/{origin}/producers:
 #    get:
 #      summary: List of producers from a region
 #      parameters:
-#        - name: origin
+#        - name: language
 #          in: path
 #          required: true
 #          schema:
-#            $ref: "#/components/schemas/RefName"
-#        - name: region
+#            $ref: "#/components/schemas/LanguageCode"
+#        - name: origin
 #          in: path
 #          required: true
 #          schema:
@@ -108,8 +108,8 @@ paths:
   /{language}/varieties:
     get:
       summary: List of all varieties
-      operationId: getVarieties
-      x-openapi-router-controller: api
+      #operationId: getVarieties
+      #x-openapi-router-controller: api
       parameters:
         - name: language
           in: path
@@ -122,8 +122,8 @@ paths:
   /{language}/processing:
     get:
       summary: List of all processes
-      operationId: getProcessing
-      x-openapi-router-controller: api
+      #operationId: getProcessing
+      #x-openapi-router-controller: api
       parameters:
         - name: language
           in: path
@@ -136,8 +136,8 @@ paths:
   /{language}/roastercountries:
     get:
       summary: List of countries of roasters
-      operationId: getRoasterCountries
-      x-openapi-router-controller: api
+      #operationId: getRoasterCountries
+      #x-openapi-router-controller: api
       parameters:
         - name: language
           in: path
@@ -159,8 +159,8 @@ paths:
   /{language}/roasters:
     get:
       summary: List of all roasters
-      operationId: getRoasters
-      x-openapi-router-controller: api
+      #operationId: getRoasters
+      #x-openapi-router-controller: api
       parameters:
         - name: language
           in: path
