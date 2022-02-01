@@ -96,7 +96,7 @@ def upgrade():
         sa.Column('elevation_min', sa.INTEGER, comment='in masl'),
         sa.Column('elevation_max', sa.INTEGER, comment='in masl'),
         sa.PrimaryKeyConstraint('id', name='pk_farm'),
-        sa.ForeignKeyConstraint(['country_name', 'region_name'], ['region.country', 'region.name'], name='fk_farm_reg'),
+        sa.ForeignKeyConstraint(['country_name', 'region_name'], ['region.country_name', 'region.name'], name='fk_farm_reg'),
         sa.ForeignKeyConstraint(['producer_id'], ['producer.id'], name='fk_farm_prod')
     )
     op.create_table(
@@ -121,8 +121,8 @@ def upgrade():
         sa.Column('name', sa.VARCHAR(64), nullable=False),
         sa.Column('equivalent_flavour', sa.VARCHAR(128)),
         sa.Column('pattern', sa.VARCHAR(64), nullable=False),
-        sa.PrimaryKeyConstraint('name', name='pk_flavour'),
-        sa.ForeignKeyConstraint(['parent_flavour'], ['flavour.name'], name='fk_flavour_flav')
+        sa.PrimaryKeyConstraint('name', name='pk_flavour_modifier'),
+        sa.ForeignKeyConstraint(['equivalent_flavour'], ['flavour.name'], name='fk_flavour_modifier_flav')
     )
     op.create_table(
         'flavour_colors',
@@ -299,7 +299,7 @@ def upgrade():
         sa.Column('green_id', sa.INTEGER, nullable=False),
         sa.Column('flavour_name', sa.VARCHAR(64), nullable=False),
         sa.PrimaryKeyConstraint('id', name='pk_green_fermentation_flavour'),
-        sa.ForeignKeyConstraint(['green_id'], ['green.id'], name='fk_green_fermentation_duration_green'),
+        sa.ForeignKeyConstraint(['green_id'], ['green.id'], name='fk_green_fermentation_flavour_green'),
         sa.ForeignKeyConstraint(['flavour_name'], ['flavour.name'], name='fk_green_fermentation_flavour_flav')
     )
     op.create_table(
@@ -432,7 +432,6 @@ def downgrade():
     op.drop_table('roast_translation')
     op.drop_table('roast')
     op.drop_table('green_fermentation_modifier')
-    op.drop_table('fermentation_type_translation')
     op.drop_table('green_fermentation_type')
     op.drop_table('green_drying_device')
     op.drop_table('green_honey_grade')
@@ -445,9 +444,18 @@ def downgrade():
     op.drop_table('decaf_translation')
     op.drop_table('decaf')
     op.drop_table('processing_translation')
+    op.drop_table('fermentation_modifier_translation')
+    op.drop_table('fermentation_type_translation')
+    op.drop_table('drying_device_translation')
     op.drop_table('processing')
+    op.drop_table('fermentation_modifier')
+    op.drop_table('fermentation_type')
+    op.drop_table('drying_device')
+    op.drop_table('honey_grade')
+    op.drop_table('flavour_modifier_translation')
     op.drop_table('flavour_translation')
     op.drop_table('flavour_colors')
+    op.drop_table('flavour_modifier')
     op.drop_table('flavour')
     op.drop_table('roaster')
     op.drop_table('farm')
