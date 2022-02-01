@@ -33,6 +33,12 @@ honey_grade = (
 	('red', 3),
 	('black', 4)
 )
+bean_size_categories = (
+    ('aa', 'AA'),
+    ('ab', 'AB'),
+    ('pb', 'PB'),
+    ('e', 'E')
+)
 drying_device = (
 	('ground', 'sundried', 'sonnengetrocknet'),
 	('raised_beds', 'dried on raised beds', 'auf Tischen getrocknet'),
