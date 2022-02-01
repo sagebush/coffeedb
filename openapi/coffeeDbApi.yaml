@@ -10,28 +10,16 @@ paths:
   /{language}/origins:
     get:
       summary: List of origins
-      #operationId: getOrigins
-      #x-openapi-router-controller: api
       parameters:
-        - name: language
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/LanguageCode"
+        - $ref: "#/components/parameters/LanguageCodeParam"
       responses:
         "200":
           $ref: "#/components/responses/LocationsResp"
   /{language}/origins/{origin}:
     get:
       summary: List of regions in the given origin
-      #operationId: getRegions
-      #x-openapi-router-controller: api
       parameters:
-        - name: language
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/LanguageCode"
+        - $ref: "#/components/parameters/LanguageCodeParam"
         - name: origin
           in: path
           required: true
@@ -43,22 +31,10 @@ paths:
   /{language}/farms:
     get:
       summary: List of farms in a region
-      #operationId: getFarms
-      #x-openapi-router-controller: api
       parameters:
-        - name: language
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/LanguageCode"
-        - name: origin
-          in: query
-          schema:
-            $ref: "#/components/schemas/RefName"
-        - name: region
-          in: query
-          schema:
-            $ref: "#/components/schemas/RefName"
+        - $ref: "#/components/parameters/LanguageCodeParam"
+        - $ref: "#/components/parameters/OriginFilterParam"
+        - $ref: "#/components/parameters/RegionFilterParam"
         - name: producer
           in: query
           schema:
@@ -69,22 +45,10 @@ paths:
   /{language}/stations:
     get:
       summary: List of washind stations in a region
-      #operationId: getStations
-      #x-openapi-router-controller: api
       parameters:
-        - name: language
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/LanguageCode"
-        - name: origin
-          in: query
-          schema:
-            $ref: "#/components/schemas/RefName"
-        - name: region
-          in: query
-          schema:
-            $ref: "#/components/schemas/RefName"
+        - $ref: "#/components/parameters/LanguageCodeParam"
+        - $ref: "#/components/parameters/OriginFilterParam"
+        - $ref: "#/components/parameters/RegionFilterParam"
       responses:
         "200":
           $ref: "#/components/responses/LocationsResp"
@@ -92,11 +56,7 @@ paths:
 #    get:
 #      summary: List of producers from a region
 #      parameters:
-#        - name: language
-#          in: path
-#          required: true
-#          schema:
-#            $ref: "#/components/schemas/LanguageCode"
+#        - $ref: "#/components/parameters/LanguageCode"
 #        - name: origin
 #          in: path
 #          required: true
@@ -108,42 +68,24 @@ paths:
   /{language}/varieties:
     get:
       summary: List of all varieties
-      #operationId: getVarieties
-      #x-openapi-router-controller: api
       parameters:
-        - name: language
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/LanguageCode"
+        - $ref: "#/components/parameters/LanguageCodeParam"
       responses:
         "200":
           $ref: "#/components/responses/ItemsResp"
   /{language}/processing:
     get:
       summary: List of all processes
-      #operationId: getProcessing
-      #x-openapi-router-controller: api
       parameters:
-        - name: language
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/LanguageCode"
+        - $ref: "#/components/parameters/LanguageCodeParam"
       responses:
         "200":
           $ref: "#/components/responses/ItemsResp"
   /{language}/roastercountries:
     get:
       summary: List of countries of roasters
-      #operationId: getRoasterCountries
-      #x-openapi-router-controller: api
       parameters:
-        - name: language
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/LanguageCode"
+        - $ref: "#/components/parameters/LanguageCodeParam"
       responses:
         "200":
           description: List of country codes
@@ -159,14 +101,8 @@ paths:
   /{language}/roasters:
     get:
       summary: List of all roasters
-      #operationId: getRoasters
-      #x-openapi-router-controller: api
       parameters:
-        - name: language
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/LanguageCode"
+        - $ref: "#/components/parameters/LanguageCodeParam"
       responses:
         "200":
           $ref: "#/components/responses/RoasterResp"
@@ -475,6 +411,27 @@ components:
         - coffeeName
         - roasterName
         - roasterCountry
+
+  parameters:
+    LanguageCodeParam:
+      name: language
+      description: Language code
+      in: path
+      required: true
+      schema:
+        $ref: "#/components/schemas/LanguageCode"
+    OriginFilterParam:
+      name: origin
+      description: Query parameter to filter for origin
+      in: query
+      schema:
+        $ref: "#/components/schemas/RefName"
+    RegionFilterParam:
+      name: region
+      description: Query parameter to filter for region
+      in: query
+      schema:
+        $ref: "#/components/schemas/RefName"
 
   responses:
     ItemsResp:

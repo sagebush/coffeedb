@@ -3,6 +3,7 @@ from sqlalchemy import text
 from sharedQueries import id, display_name, has_country, has_region_in_country, get_country_name, get_region_name, exec_query
 from .BaseView import BaseView
 from i18n import is_supported, translate
+from i18nTerms import Terms
 from sharedResponses import language_not_supported_response, region_in_origin_unknown_response, response
 from templates import farms_template
 
@@ -33,5 +34,5 @@ class StationsView(BaseView):
             country_name = get_country_name(connection, origin, language)
             region_name = get_region_name(connection, origin, region)
             stations = self.get_stations(connection, region)
-        title = translate('stations_in_region_title', language, region=region_name, country=country_name)
+        title = translate(Terms.STATIONS_TITLE, language, region=region_name, country=country_name)
         return response(farms_template, title, language, stations)

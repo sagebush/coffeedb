@@ -2,6 +2,7 @@ from sqlalchemy import text
 from sharedQueries import id, display_name, exec_query
 from .BaseView import BaseView
 from i18n import is_supported, translate
+from i18nTerms import Terms
 from sharedResponses import language_not_supported_response, response
 from templates import roasters_template
 
@@ -26,5 +27,5 @@ class RoastersView(BaseView):
         roasters = []
         with self.open_connection() as connection:
             roasters = self.get_roasters(connection, language)
-        title = translate('roasters_title', language)
+        title = translate(Terms.ROASTERS_TITLE, language)
         return response(roasters_template, title, language, roasters)

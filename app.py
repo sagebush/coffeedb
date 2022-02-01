@@ -7,8 +7,7 @@ import i18n
 
 logging.basicConfig(level=logging.INFO)
 
-translationFile = os.path.join('translations', 'translation.yml')
-i18n.load(translationFile)
+i18n.load('translations')
 
 dbUrl = os.getenv('DB_URL')
 dbengine = create_engine(dbUrl, convert_unicode=True)

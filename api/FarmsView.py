@@ -3,6 +3,7 @@ from sqlalchemy import text
 from sharedQueries import id, display_name, has_country, has_region_in_country, get_country_name, get_region_name, exec_query
 from .BaseView import BaseView
 from i18n import translate, is_supported
+from i18nTerms import Terms
 from sharedResponses import language_not_supported_response, origin_unknown_response, region_in_origin_unknown_response, response, region_without_origin_response
 from templates import farms_template
 
@@ -29,7 +30,7 @@ class FarmsView(BaseView):
         )
         return exec_query(connection, query)
 
-    def search(self, language, origin, region):
+    def search(self, language, origin=None, region=None):
         if not is_supported(language):
             return language_not_supported_response()
 
@@ -54,5 +55,5 @@ class FarmsView(BaseView):
 
             farms = self.get_farms(connection, params)
 
-        title = translate('farms_title', language)
+        title = translate(Terms.FARMS_TITLE, language)
         return response(farms_template, title, language, farms, params)

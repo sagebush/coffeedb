@@ -4,6 +4,7 @@ from sharedQueries import ref_name, display_name, has_country, get_country_name,
 from sharedResponses import origin_unknown_response, response, language_not_supported_response, invalid_mime_type_response
 from .BaseView import BaseView
 from i18n import translate, is_supported
+from i18nTerms import Terms
 from templates import origins_template, regions_template
 
 class OriginsView(BaseView):
@@ -62,7 +63,7 @@ class OriginsView(BaseView):
                     countries = self.get_countries(connection, continent[ref_name], language, has_producer=True)
                     if len(countries):
                         continents_and_countries.append((continent[display_name], countries))
-            title = translate('origins_title', language)
+            title = translate(Terms.ORIGINS_TITLE, language)
             params = {'title':title, 'continents':continents_and_countries, 'language':language, 'addLinks': True}
             return self.render_html(origins_template, params=params)
 
@@ -86,7 +87,7 @@ class OriginsView(BaseView):
         values = exec_query(connection, query)
         for val in values:
             if val[ref_name] == 'other':
-                val[display_name] = translate('other_value', language)
+                val[display_name] = translate(Terms.OTHER_VALUE, language)
         return values
 
     def get(self, language, origin):
@@ -101,7 +102,7 @@ class OriginsView(BaseView):
 
             regions = self.get_regions(connection, origin, language)
             country_name = get_country_name(connection, origin, language)
-        title = translate('region_title', language, country=country_name)
+        title = translate(Terms.REGION_TITLE, language, country=country_name)
         data = {'title': title, 'regions': regions, 'language': language}
         return response(regions_template, title, language, data)
 

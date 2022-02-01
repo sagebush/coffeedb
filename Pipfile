@@ -15,6 +15,7 @@ python-dotenv = "*"
 alembic-utils = "*"
 sqlalchemy-utils = "*"
 python-i18n = {extras = ["yaml"], version = "*"}
+pytest = "*"
 
 [dev-packages]
 autopep8 = "*"

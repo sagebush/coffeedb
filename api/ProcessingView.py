@@ -3,6 +3,7 @@ from sqlalchemy import text
 from sharedQueries import ref_name, display_name, exec_query
 from .BaseView import BaseView
 from i18n import is_supported, translate
+from i18nTerms import Terms
 from sharedResponses import language_not_supported_response, response
 
 class ProcessingView(BaseView):
@@ -26,5 +27,5 @@ class ProcessingView(BaseView):
         processing = []
         with self.open_connection() as connection:
             processing = self.get_processing(connection, language)
-        title = translate('processing_title', language)
+        title = translate(Terms.PROCESSING_TITLE, language)
         return response('processing.html', title, language, processing)
