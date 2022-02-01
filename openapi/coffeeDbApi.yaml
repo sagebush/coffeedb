@@ -7,6 +7,18 @@ servers:
   - url: http://databaseof.coffee/
 
 paths:
+  /{language}:
+    get:
+      summary: home page
+      parameters:
+        - $ref: "#/components/parameters/LanguageCodeParam"
+      responses:
+        "200":
+          description: home page
+          content:
+            text/html:
+              schema:
+                type: string
   /{language}/origins:
     get:
       summary: List of origins
@@ -14,20 +26,16 @@ paths:
         - $ref: "#/components/parameters/LanguageCodeParam"
       responses:
         "200":
-          $ref: "#/components/responses/LocationsResp"
-  /{language}/origins/{origin}:
+          $ref: "#/components/responses/ItemNamesResp"
+  /{language}/regions:
     get:
       summary: List of regions in the given origin
       parameters:
         - $ref: "#/components/parameters/LanguageCodeParam"
-        - name: origin
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/RefName"
+        - $ref: "#/components/parameters/OriginFilterParam"
       responses:
         "200":
-          $ref: "#/components/responses/LocationsResp"
+          $ref: "#/components/responses/ItemNamesResp"
   /{language}/farms:
     get:
       summary: List of farms in a region
@@ -41,7 +49,7 @@ paths:
             $ref: "#/components/schemas/RefName"
       responses:
         "200":
-          $ref: "#/components/responses/LocationsResp"
+          $ref: "#/components/responses/ItemNamesResp"
   /{language}/stations:
     get:
       summary: List of washind stations in a region
@@ -51,36 +59,37 @@ paths:
         - $ref: "#/components/parameters/RegionFilterParam"
       responses:
         "200":
-          $ref: "#/components/responses/LocationsResp"
-#  /{language}/origins/{origin}/producers:
-#    get:
-#      summary: List of producers from a region
-#      parameters:
-#        - $ref: "#/components/parameters/LanguageCode"
-#        - name: origin
-#          in: path
-#          required: true
-#          schema:
-#            $ref: "#/components/schemas/RefName"
-#      responses:
-#        "200":
-#          $ref: "#/components/responses/LocationsResp"
+          $ref: "#/components/responses/ItemIdssResp"
+  /{language}/producers:
+    get:
+      summary: List of producers from a region
+      parameters:
+        - $ref: "#/components/parameters/LanguageCodeParam"
+        - $ref: "#/components/parameters/OriginFilterParam"
+        - $ref: "#/components/parameters/RegionFilterParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/ItemNamesResp"
   /{language}/varieties:
     get:
       summary: List of all varieties
       parameters:
         - $ref: "#/components/parameters/LanguageCodeParam"
+        - $ref: "#/components/parameters/OriginFilterParam"
+        - $ref: "#/components/parameters/RegionFilterParam"
       responses:
         "200":
-          $ref: "#/components/responses/ItemsResp"
+          $ref: "#/components/responses/ItemNamesResp"
   /{language}/processing:
     get:
       summary: List of all processes
       parameters:
         - $ref: "#/components/parameters/LanguageCodeParam"
+        - $ref: "#/components/parameters/OriginFilterParam"
+        - $ref: "#/components/parameters/RegionFilterParam"
       responses:
         "200":
-          $ref: "#/components/responses/ItemsResp"
+          $ref: "#/components/responses/ItemNamesResp"
   /{language}/roastercountries:
     get:
       summary: List of countries of roasters
@@ -103,21 +112,14 @@ paths:
       summary: List of all roasters
       parameters:
         - $ref: "#/components/parameters/LanguageCodeParam"
+        - name: country
+          description: Query parameter to filter for country
+          in: query
+          schema:
+            $ref: "#/components/schemas/CountryCode"
       responses:
         "200":
           $ref: "#/components/responses/RoasterResp"
-#  /roasters/{countryCode}:
-#    get:
-#      summary: List of all roasters in the given country
-#      parameters:
-#        - name: countryCode
-#          in: path
-#          required: true
-#          schema:
-#            $ref: "#/components/schemas/CountryCode"
-#      responses:
-#        "200":
-#          $ref: "#/components/responses/RoasterResp"
 #  /flavournotes:
 #    get:
 #      summary: List of all flavour notes
@@ -277,7 +279,7 @@ components:
       description: Two letter code following ISO-639-1 for each supported language
       type: string
       format: "^[a-z]{2}$"
-    NamedId:
+    ItemName:
       type: object
       properties:
         refName:
@@ -287,24 +289,15 @@ components:
       required:
         - refName
         - displayName
-    LocationId:
-      description: Used for origins, regions and producers. Elevation is in meters above sea level
+    ItemId:
       type: object
       properties:
-        refName:
-          $ref: "#/components/schemas/RefName"
+        refId:
+          type: integer
         displayName:
           $ref: "#/components/schemas/DisplayName"
-        elevationMin:
-          type: integer
-          minimum: 0
-          maximum: 5000
-        elevationMax:
-          type: integer
-          minimum: 0
-          maximum: 5000
       required:
-        - refName
+        - refId
         - displayName
     Roaster:
       type: object
@@ -319,98 +312,54 @@ components:
         - refName
         - displayName
         - countryCode
-    Coffee:
-      type: object
-      properties:
-        id:
-          type: integer
-        displayName:
-          $ref: "#/components/schemas/DisplayName"
-        roaster:
-          $ref: "#/components/schemas/Roaster"
-        roast:
-          $ref: "#/components/schemas/NamedId"
-        flavourNotes:
-          type: array
-          items:
-            $ref: "#/components/schemas/NamedId"
-          minItems: 1
-          maxItems: 5
-        greens:
-          type: array
-          items:
-            type: object
-            properties:
-              origin:
-                $ref: "#/components/schemas/LocationId"
-              region:
-                $ref: "#/components/schemas/LocationId"
-              producer:
-                $ref: "#/components/schemas/LocationId"
-              variety:
-                $ref: "#/components/schemas/NamedId"
-              processing:
-                $ref: "#/components/schemas/NamedId"
-              decaffeinated:
-                $ref: "#/components/schemas/NamedId"
-              certification:
-                $ref: "#/components/schemas/NamedId"
-              blendPercentage:
-                type: integer
-                minimum: 0
-                maximum: 100
-            required:
-              - origin
-          minItems: 1
-          maxItems: 5
-      required:
-        - id
-        - displayName
-        - roaster
-    IncomingCoffee:
-      type: object
-      properties:
-        sourceLanguage:
-          $ref: "#/components/schemas/LanguageCode"
-        sourceUrl:
-          type: string
-          format: uri
-        coffeeName:
-          type: string
-        roasterName:
-          type: string
-        roasterCountry:
-          $ref: "#/components/schemas/CountryCode"
-        roast:
-          $ref: "#/components/schemas/NamedId"
-        tastingnotes:
-          type: array
-          items:
-            $ref: "#/components/schemas/NamedId"
-        greens:
-          type: array
-          items:
-            type: object
-            properties:
-              origin:
-                type: string
-              region:
-                type: string
-              producer:
-                type: string
-              varieties:
-                type: string
-              percent:
-                type: integer
-                minimum: 0
-                maximum: 100
-            required:
-              - origin
-      required:
-        - sourceLanguage
-        - coffeeName
-        - roasterName
-        - roasterCountry
+#    Coffee:
+#      type: object
+#      properties:
+#        id:
+#          type: integer
+#        displayName:
+#          $ref: "#/components/schemas/DisplayName"
+#        roaster:
+#          $ref: "#/components/schemas/Roaster"
+#        roast:
+#          $ref: "#/components/schemas/NamedId"
+#        flavourNotes:
+#          type: array
+#          items:
+#            $ref: "#/components/schemas/NamedId"
+#          minItems: 1
+#          maxItems: 5
+#        greens:
+#          type: array
+#          items:
+#            type: object
+#            properties:
+#              origin:
+#                $ref: "#/components/schemas/LocationId"
+#              region:
+#                $ref: "#/components/schemas/LocationId"
+#              producer:
+#                $ref: "#/components/schemas/LocationId"
+#              variety:
+#                $ref: "#/components/schemas/NamedId"
+#              processing:
+#                $ref: "#/components/schemas/NamedId"
+#              decaffeinated:
+#                $ref: "#/components/schemas/NamedId"
+#              certification:
+#                $ref: "#/components/schemas/NamedId"
+#              blendPercentage:
+#                type: integer
+#                minimum: 0
+#                maximum: 100
+#            required:
+#              - origin
+#          minItems: 1
+#          maxItems: 5
+#      required:
+#        - id
+#        - displayName
+#        - roaster
 
   parameters:
     LanguageCodeParam:
@@ -432,36 +381,51 @@ components:
       in: query
       schema:
         $ref: "#/components/schemas/RefName"
+    FarmFilterParam:
+      name: farm
+      description: Query parameter to filter for farm
+      in: query
+      schema:
+        $ref: "#/components/schemas/RefName"
+    ProducerFilterParam:
+      name: producer
+      description: Query parameter to filter for farm
+      in: query
+      schema:
+        type: integer
+    VarietyFilterParam:
+      name: farm
+      description: Query parameter to filter for farm
+      in: query
+      schema:
+        $ref: "#/components/schemas/RefName"
+    ProcessingFilterParam:
+      name: farm
+      description: Query parameter to filter for farm
+      in: query
+      schema:
+        $ref: "#/components/schemas/RefName"
 
   responses:
-    ItemsResp:
-      description: List of standardized terms
+    ItemNamesResp:
+      description: List of items, with ref name and display name
       content:
-        text/html:
-          schema:
-            type: string
         application/json:
           schema:
             type: array
             items:
-              $ref: "#/components/schemas/NamedId"
-    LocationsResp:
-      description: List of locations or location-related terms
+              $ref: "#/components/schemas/ItemName"
+    ItemIdssResp:
+      description: List of items, with id and dispaly name
       content:
-        text/html:
-          schema:
-            type: string
         application/json:
           schema:
             type: array
             items:
-              $ref: "#/components/schemas/LocationId"
+              $ref: "#/components/schemas/ItemId"
     RoasterResp:
       description: List of roasters
       content:
-        text/html:
-          schema:
-            type: string
         application/json:
           schema:
             type: array
