@@ -120,12 +120,14 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/RoasterResp"
-#  /flavournotes:
-#    get:
-#      summary: List of all flavour notes
-#      responses:
-#        "200":
-#          $ref: "#/components/responses/ItemsResp"
+  /{language}/flavours:
+    get:
+      summary: List of all flavour notes
+      parameters:
+        - $ref: "#/components/parameters/LanguageCodeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/ItemNamesResp"
 #  /coffees:
 #    get:
 #      summary: List of coffees

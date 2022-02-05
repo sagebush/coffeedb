@@ -5,3 +5,4 @@ from .StationsView import StationsView
 from .VarietiesView import VarietiesView
 from .RoastercountriesView import RoastercountriesView
 from .RoastersView import RoastersView
+from .FlavoursView import FlavoursView
