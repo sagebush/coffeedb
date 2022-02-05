@@ -11,4 +11,4 @@ class Terms(Enum):
     VARIETIES_TITLE  = auto(),
     FARMS_TITLE  = auto(),
     STATIONS_TITLE  = auto(),
-    OTHER_VALUE  = auto(),
+    OTHER_REGION  = auto(),

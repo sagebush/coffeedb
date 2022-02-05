@@ -1,6 +1,6 @@
 from sqlalchemy import text
 
-def exec_query(connection, query):
+def execute_query(connection, query):
     rows = connection.execute(query)
     result = []
     for row in rows:
@@ -10,6 +10,7 @@ def exec_query(connection, query):
 ref_name = 'refName'
 id = 'id'
 display_name = 'displayName'
+country_code = 'countryCode'
 
 def get_country_name(connection, country, language):
     query = text(
@@ -47,3 +48,27 @@ def has_country(connection, country):
         query.close()
         return False
     return True
+
+def get_countries(connection, language, has_producer=False, has_roaster=False):
+    filter = ''
+    if has_producer:
+        filter += ' AND country_roles.has_producer IS TRUE'
+    if has_roaster:
+        filter += ' AND country_roles.has_roaster IS TRUE'
+
+    query = text(
+        'SELECT name AS ' + ref_name + 
+        ', country_translation.value AS ' + display_name + 
+        ', country_code.code AS ' + country_code +
+        ' FROM country' +
+        ' INNER JOIN country_translation' +
+        ' ON country_translation.country_name = name' +
+        ' AND country_translation.language_code = "' + language + '"' +
+        ' INNER JOIN country_code' + 
+        ' ON country_code.country_name = name'
+        ' INNER JOIN country_roles' +
+        ' ON country_roles.country_name = name' +
+        filter +
+        ' ORDER BY name;'
+    )
+    return execute_query(connection, query)

@@ -1,12 +1,11 @@
-from asyncio import open_connection
+from flask import json
 from sqlalchemy import text
-from sharedQueries import id, display_name, has_country, has_region_in_country, get_country_name, get_region_name, exec_query
+from sharedQueries import ref_name, display_name,execute_query
 from .BaseView import BaseView
-from i18n import translate, is_supported
-from i18nTerms import Terms
-from sharedResponses import language_not_supported_response, origin_unknown_response, region_in_origin_unknown_response, response, region_without_origin_response
-from templates import farms_template
-
+from sharedResponses import country_unknown_response, region_in_country_unknown_response, internal_error_response
+from sqlFilter import filter_by_country, filter_by_region
+import logging
+import traceback
 
 class Params:
     country, region = None, None
@@ -15,45 +14,33 @@ class Params:
 
 class FarmsView(BaseView):
 
-    def get_farms(self, connection, params):
-        where_clause = ''
-        if params.country is not None:
-            where_clause += ' WHERE country_name = "' + params.country + '"'
-        if params.region is not None:
-            where_clause += ' WHERE region_name = "' + params.region + '"'
+    def get_farms(self, connection, country, region):
+        filter = filter_by_country(country)
+        filter = filter_by_region(region, filter)
 
         query = text(
-            'SELECT id AS ' + id + ', display_name AS ' + display_name + ', elevation_min AS elevationMin, elevation_max AS elevationMax' +
+            'SELECT name AS ' + ref_name + ', display_name AS ' + display_name + 
+            ', elevation_min AS elevationMin, elevation_max AS elevationMax' +
             ' FROM farm' +
-            where_clause +
+            filter +
             ' ORDER BY display_name;'
         )
-        return exec_query(connection, query)
+        return execute_query(connection, query)
 
-    def search(self, language, origin=None, region=None):
-        if not is_supported(language):
-            return language_not_supported_response()
+    def search(self, language, country=None, region=None):
+        try:
+            # language parameter is not used but kept in the signature for conistency in the REST endpoints
+            farms = []
+            with self.open_connection() as connection:
+                response = country_unknown_response(connection, country)
+                if response is not None: return response
 
-        farms = []
-        params = Params()
-        with self.open_connection() as connection:
-            if origin is not None:
-                if not has_country(connection, origin):
-                    return origin_unknown_response()
-                params.country = origin
-                params.country_name = get_country_name(
-                    connection, origin, language)
+                response = region_in_country_unknown_response(connection, region, country)
+                if response is not None: return response
 
-            if region is not None:
-                if origin is None:
-                    return region_without_origin_response()
-                if not has_region_in_country(connection, region, origin):
-                    return region_in_origin_unknown_response()
-                params.region = region
-                params.region_name = get_region_name(
-                    connection, origin, region)
+                farms = self.get_farms(connection, country, region)
+            return json.jsonify(farms)
 
-            farms = self.get_farms(connection, params)
-
-        title = translate(Terms.FARMS_TITLE, language)
-        return response(farms_template, title, language, farms, params)
+        except Exception:
+            logging.error(traceback.format_exc())
+            return internal_error_response()

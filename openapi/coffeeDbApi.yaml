@@ -4,16 +4,31 @@ info:
   version: 0.0.1
 
 servers:
-  - url: http://databaseof.coffee/
+  - url: http://database.coffee/
 
 paths:
+  /:
+    get:
+      summary: home page without language specified, returns a redirect to english
+      operationId: base
+      x-openapi-router-controller: api.base
+      responses:
+        '308':
+          description: redirect to home page
+          headers:
+            Location:
+              description: location to redirect to
+              schema:
+                type: string
   /{language}:
     get:
       summary: home page
+      operationId: home
+      x-openapi-router-controller: api.base
       parameters:
         - $ref: "#/components/parameters/LanguageCodeParam"
       responses:
-        "200":
+        '200':
           description: home page
           content:
             text/html:
@@ -26,13 +41,13 @@ paths:
         - $ref: "#/components/parameters/LanguageCodeParam"
       responses:
         "200":
-          $ref: "#/components/responses/ItemNamesResp"
+          $ref: "#/components/responses/CountryResp"
   /{language}/regions:
     get:
       summary: List of regions in the given origin
       parameters:
         - $ref: "#/components/parameters/LanguageCodeParam"
-        - $ref: "#/components/parameters/OriginFilterParam"
+        - $ref: "#/components/parameters/CountryFilterParam"
       responses:
         "200":
           $ref: "#/components/responses/ItemNamesResp"
@@ -41,7 +56,7 @@ paths:
       summary: List of farms in a region
       parameters:
         - $ref: "#/components/parameters/LanguageCodeParam"
-        - $ref: "#/components/parameters/OriginFilterParam"
+        - $ref: "#/components/parameters/CountryFilterParam"
         - $ref: "#/components/parameters/RegionFilterParam"
         - name: producer
           in: query
@@ -55,41 +70,39 @@ paths:
       summary: List of washind stations in a region
       parameters:
         - $ref: "#/components/parameters/LanguageCodeParam"
-        - $ref: "#/components/parameters/OriginFilterParam"
-        - $ref: "#/components/parameters/RegionFilterParam"
-      responses:
-        "200":
-          $ref: "#/components/responses/ItemIdssResp"
-  /{language}/producers:
-    get:
-      summary: List of producers from a region
-      parameters:
-        - $ref: "#/components/parameters/LanguageCodeParam"
-        - $ref: "#/components/parameters/OriginFilterParam"
+        - $ref: "#/components/parameters/CountryFilterParam"
         - $ref: "#/components/parameters/RegionFilterParam"
       responses:
         "200":
           $ref: "#/components/responses/ItemNamesResp"
+#  /{language}/producers:
+#    get:
+#      summary: List of producers from a region
+#      parameters:
+#        - $ref: "#/components/parameters/LanguageCodeParam"
+#        - $ref: "#/components/parameters/CountryFilterParam"
+#        - $ref: "#/components/parameters/RegionFilterParam"
+#      responses:
+#        "200":
+#          $ref: "#/components/responses/ItemNamesResp"
   /{language}/varieties:
     get:
       summary: List of all varieties
       parameters:
         - $ref: "#/components/parameters/LanguageCodeParam"
-        - $ref: "#/components/parameters/OriginFilterParam"
-        - $ref: "#/components/parameters/RegionFilterParam"
       responses:
         "200":
           $ref: "#/components/responses/ItemNamesResp"
-  /{language}/processing:
-    get:
-      summary: List of all processes
-      parameters:
-        - $ref: "#/components/parameters/LanguageCodeParam"
-        - $ref: "#/components/parameters/OriginFilterParam"
-        - $ref: "#/components/parameters/RegionFilterParam"
-      responses:
-        "200":
-          $ref: "#/components/responses/ItemNamesResp"
+#  /{language}/processing:
+#    get:
+#      summary: List of all processes
+#      parameters:
+#        - $ref: "#/components/parameters/LanguageCodeParam"
+#        - $ref: "#/components/parameters/CountryFilterParam"
+#        - $ref: "#/components/parameters/RegionFilterParam"
+#      responses:
+#        "200":
+#          $ref: "#/components/responses/ItemNamesResp"
   /{language}/roastercountries:
     get:
       summary: List of countries of roasters
@@ -97,26 +110,13 @@ paths:
         - $ref: "#/components/parameters/LanguageCodeParam"
       responses:
         "200":
-          description: List of country codes
-          content:
-            text/html:
-              schema:
-                type: string
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/CountryCode"
+          $ref: "#/components/responses/CountryResp"
   /{language}/roasters:
     get:
       summary: List of all roasters
       parameters:
         - $ref: "#/components/parameters/LanguageCodeParam"
-        - name: country
-          description: Query parameter to filter for country
-          in: query
-          schema:
-            $ref: "#/components/schemas/CountryCode"
+        - $ref: "#/components/parameters/CountryFilterParam"
       responses:
         "200":
           $ref: "#/components/responses/RoasterResp"
@@ -289,6 +289,19 @@ components:
       required:
         - refName
         - displayName
+    CountryName:
+      type: object
+      properties:
+        refName:
+          $ref: "#/components/schemas/RefName"
+        displayName:
+          $ref: "#/components/schemas/DisplayName"
+        countryCode:
+          $ref: "#/components/schemas/CountryCode"
+      required:
+        - refName
+        - displayName
+        - countryCode
     ItemId:
       type: object
       properties:
@@ -306,8 +319,10 @@ components:
           $ref: "#/components/schemas/RefName"
         displayName:
           $ref: "#/components/schemas/DisplayName"
-        countryCode:
-          $ref: "#/components/schemas/CountryCode"
+        url:
+          type: string
+        country:
+          $ref: "#/components/schemas/CountryName"
       required:
         - refName
         - displayName
@@ -369,9 +384,9 @@ components:
       required: true
       schema:
         $ref: "#/components/schemas/LanguageCode"
-    OriginFilterParam:
-      name: origin
-      description: Query parameter to filter for origin
+    CountryFilterParam:
+      name: country
+      description: Query parameter to filter for country
       in: query
       schema:
         $ref: "#/components/schemas/RefName"
@@ -415,7 +430,7 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/ItemName"
-    ItemIdssResp:
+    ItemIdsResp:
       description: List of items, with id and dispaly name
       content:
         application/json:
@@ -431,3 +446,11 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/Roaster"
+    CountryResp:
+      description: List of countries
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/CountryName"
