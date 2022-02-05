@@ -42,7 +42,7 @@ bean_size_categories = (
 drying_device = (
 	('ground', 'sundried', 'sonnengetrocknet'),
 	('raised_beds', 'dried on raised beds', 'auf Tischen getrocknet'),
-	('mechanical_dryers' 'mechanically dried', 'mechanisch getrocknet')
+	('mechanical_dryers', 'mechanically dried', 'mechanisch getrocknet')
 )
 ferm_type = (
     ('cm', 'carbonic maceration', 'carbonic maceration'),
@@ -67,10 +67,10 @@ def upgrade():
 
     dryingTable =  sa.Table('drying_device', meta)
     dryingTransTable =  sa.Table('drying_device_translation', meta)
-    for dry in drying_device:
-        op.execute(insert(dryingTable).values(name=dry[0]))
-        op.execute(insert(dryingTransTable).values(drying_device_name=dry[0], language_code='en', value=dry[1]))
-        op.execute(insert(dryingTransTable).values(drying_device_name=dry[0], language_code='de', value=dry[2]))
+    for device, en, de in drying_device:
+        op.execute(insert(dryingTable).values(name=device))
+        op.execute(insert(dryingTransTable).values(drying_device_name=device, language_code='en', value=en))
+        op.execute(insert(dryingTransTable).values(drying_device_name=device, language_code='de', value=de))
 
     fermTypeTable =  sa.Table('fermentation_type', meta)
     fermTypeTransTable =  sa.Table('fermentation_type_translation', meta)
